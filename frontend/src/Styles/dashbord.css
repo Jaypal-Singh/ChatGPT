@@ -1,0 +1,15 @@
+.dashboard-container {
+    display: flex;
+    height: 100vh; /* full viewport */
+    margin: 0;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+.div5 {
+    width: 15%;
+    padding: 20px;
+    background: linear-gradient(180deg, #222b3f, #424a56);
+    height: 100%;
+ 
+}

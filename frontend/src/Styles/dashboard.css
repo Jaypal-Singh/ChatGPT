@@ -1,0 +1,47 @@
+/* Base styles for all navigation options */
+.navigate-option-inner-div {
+    /* Ensures the inner div contains the options properly */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ----------------------------------------------------- */
+/* DASHBOARD LINK (NON-ACTIVE) HOVER FIX */
+/* ----------------------------------------------------- */
+
+/* Define the lighter gradient hover effect for the Dashboard link */
+.dashboard-navigate-option:hover {
+    /* Light gradient background (Cyan to Pink/Purple) */
+    background: linear-gradient(to right, #2e86b1, #7f40b9);
+    /* Add a subtle glow/border effect */
+    box-shadow: 0 0 20px rgba(74, 46, 101, 0.5), 0 0 30px rgba(255, 255, 255, 0.2); 
+    /* Ensure text and icon remain visible (or change color on hover) */
+    color: #FFFFFF !important;
+    
+    /* Ensure scale/transform is maintained if needed */
+    transform: none;
+}
+
+/* Base style for the active Chats link */
+.chats-navigate-option {
+    /* Transition for the hover effect */
+    transition: all 0.2s ease-in-out;
+}
+
+/* ----------------------------------------------------- */
+/* HOVER EFFECT FOR ACTIVE CHATS BUTTON (FANCY GLOW) */
+/* ----------------------------------------------------- */
+
+/* When hovering over the active Chat link, increase the glow/shadow */
+.chats-navigate-option:hover {
+    /* Increase the shadow intensity and spread (Darker, more intense effect for the active link) */
+    box-shadow: 0 0 20px rgba(74, 46, 101, 0.5), 0 0 30px rgba(255, 255, 255, 0.2); 
+    background: linear-gradient(to right, #2e86b1, #7f40b9);
+    /* A small scale up effect to show interaction */
+    transform: scale(1.02);
+}
+
+ .icon-name{
+  font-size: 14px !important;
+ }
+                                        
