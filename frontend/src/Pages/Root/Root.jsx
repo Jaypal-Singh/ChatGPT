@@ -6,20 +6,17 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const Root = () => {
   return (
-    <div className="container-fluid">
+    <div className="overview-scroll container-fluid">
       <div className="row">
         {/* Sidebar*/}
-        <div
-          className="col-3 col-md-2 p-0 vh-100"
-          style={{ backgroundColor: "#FFFFFF" }}
-        >
+        <div className="col-3 col-md-2 p-0 vh-100">
           <SideBar />
         </div>
 
         {/* Dashboard or Chats Section */}
         <div
-          className="col-9 col-md-10 p-4"
-          style={{ backgroundColor: "#6c98e0" }}
+          className="col-9 col-md-10 ps-4 pe-4 "
+          style={{ backgroundColor: "#0d1424" }}
         >
           <Routes>
             <Route path="/" element={<Dashboard />} />

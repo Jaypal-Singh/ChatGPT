@@ -24,7 +24,7 @@ import Account from "./Account/Account";
 const SideBar = () => {
   return (
     // The main container for the sidebar: fixed width, full height, and uses flex-col
-    <div className="w-64 h-screen bg-gray-900 flex flex-col">
+    <div className="w-64 h-full bg-gray-900 flex flex-col sticky">
       {/* 1. Logo (Fixed at the Top) */}
       <div className="flex-shrink-0">
         <Logo />
