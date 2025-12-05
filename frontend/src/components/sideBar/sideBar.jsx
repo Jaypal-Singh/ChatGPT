@@ -23,20 +23,19 @@ import Account from "./Account/Account";
 
 const SideBar = () => {
   return (
-    // The main container for the sidebar: fixed width, full height, and uses flex-col
-    <div className="w-64 h-full bg-gray-900 flex flex-col sticky">
+    <div className="w-full h-full bg-slate-900 flex flex-col border-r border-slate-800">
       {/* 1. Logo (Fixed at the Top) */}
       <div className="flex-shrink-0">
         <Logo />
       </div>
 
       {/* 2. Navigation (Takes all remaining vertical space and allows scrolling) */}
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto custom-scrollbar">
         <Navigate />
       </div>
 
       {/* 3. Account (Fixed at the Bottom) */}
-      <div className="flex-shrink-0 border-t border-gray-700">
+      <div className="flex-shrink-0 border-t border-slate-800">
         <Account />
       </div>
     </div>

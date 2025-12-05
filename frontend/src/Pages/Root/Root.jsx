@@ -1,28 +1,23 @@
 import React from "react";
-import SideBar from "../../components/sideBar/SideBar";
+import SideBar from "../../components/sideBar/sideBar";
 import Dashboard from "../Dashboard/Dashboard";
 import Chats from "../Chats/Chats";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const Root = () => {
   return (
-    <div className="overview-scroll container-fluid">
-      <div className="row">
-        {/* Sidebar*/}
-        <div className="col-3 col-md-2 p-0 vh-100">
-          <SideBar />
-        </div>
+    <div className="flex h-screen w-full overflow-hidden bg-[#0D1424]">
+      {/* Sidebar - Fixed Width */}
+      <div className="w-64 flex-shrink-0 h-full">
+        <SideBar />
+      </div>
 
-        {/* Dashboard or Chats Section */}
-        <div
-          className="col-9 col-md-10 ps-4 pe-4 "
-          style={{ backgroundColor: "#0d1424" }}
-        >
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/chats" element={<Chats />} />
-          </Routes>
-        </div>
+      {/* Main Content - Takes remaining space */}
+      <div className="flex-1 h-full overflow-y-auto relative">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/chats" element={<Chats />} />
+        </Routes>
       </div>
     </div>
   );

@@ -12,9 +12,12 @@
 // export default Navigate;
 
 import React from "react";
-import { Gauge, MessageSquare } from "lucide-react"; // Imported icons for better visualization
+import { Gauge, MessageSquare } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navigate = () => {
+  const location = useLocation();
+
   const navItems = [
     { name: "Dashboard", icon: Gauge, link: "/" },
     { name: "Chat", icon: MessageSquare, link: "/chats" },
@@ -23,57 +26,61 @@ const Navigate = () => {
     {
       label: "AI Status",
       value: "Online",
-      color: "text-green-500",
-      dotClass: "bg-green-500",
+      color: "text-emerald-400",
+      dotClass: "bg-emerald-500",
     },
     {
       label: "Response Time",
       value: "~1.2s",
       color: "text-blue-400",
-      dotClass: "bg-blue-400",
+      dotClass: "bg-blue-500",
     },
     {
       label: "Model Version",
       value: "v2.1",
-      color: "text-pink-400",
-      dotClass: "bg-pink-400",
+      color: "text-purple-400",
+      dotClass: "bg-purple-500",
     },
   ];
 
   return (
     <>
-      <nav className="p-3">
-        {navItems.map((item) => (
-          // Using a styled Link/button structure for navigation items
-          <a
-            key={item.name}
-            href={item.link} // Using <a> as Link component isn't available here, but should be <Link>
-            className="flex items-center w-full p-3 mb-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-colors duration-150"
-          >
-            <item.icon className="w-5 h-5 mr-3" />
-            <span className="text-sm font-medium">{item.name}</span>
-          </a>
-        ))}
+      <nav className="p-3 space-y-1">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.link;
+          return (
+            <Link
+              key={item.name}
+              to={item.link}
+              className={`flex items-center w-full p-3 rounded-xl transition-all duration-200 group ${isActive
+                  ? "bg-violet-600 text-white shadow-lg shadow-violet-900/20"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                }`}
+            >
+              <item.icon className={`w-5 h-5 mr-3 ${isActive ? "text-white" : "text-slate-400 group-hover:text-white"}`} />
+              <span className="text-sm font-medium">{item.name}</span>
+            </Link>
+          );
+        })}
       </nav>
-      <div className="p-4 mt-6">
-        <h5 className="text-white">SYSTEM STATUS</h5>
 
-        <div className="space-y-2">
+      <div className="px-4 mt-8">
+        <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">System Status</h5>
+
+        <div className="space-y-3 bg-slate-800/30 p-4 rounded-xl border border-slate-800">
           {statusItems.map((item) => (
             <div
               key={item.label}
-              className="flex items-center justify-between text-gray-300"
+              className="flex items-center justify-between"
             >
-              {/* Status Label with colored dot */}
               <div className="flex items-center">
                 <div
-                  className={`w-2 h-2 rounded-full mr-2 ${item.dotClass}`}
+                  className={`w-2 h-2 rounded-full mr-2.5 ${item.dotClass} shadow-[0_0_8px_rgba(0,0,0,0.3)]`}
                 ></div>
-                <span className="text-sm font-light">{item.label}</span>
+                <span className="text-xs font-medium text-slate-400">{item.label}</span>
               </div>
 
-              {/* Status Value */}
-              <span className={`text-sm font-medium ${item.color}`}>
+              <span className={`text-xs font-bold ${item.color} font-mono`}>
                 {item.value}
               </span>
             </div>
