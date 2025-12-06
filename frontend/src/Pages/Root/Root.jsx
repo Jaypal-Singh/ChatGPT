@@ -13,7 +13,7 @@ const Root = () => {
       </div>
 
       {/* Main Content - Takes remaining space */}
-      <div className="flex-1 h-full overflow-y-auto relative">
+      <div className="flex-1 h-full overflow-y-auto relative customscrollbar">
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/chats" element={<Chats />} />
