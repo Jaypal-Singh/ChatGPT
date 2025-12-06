@@ -1,7 +1,15 @@
 import React from "react";
+import PhoneTop from "../../components/Phone/PhoneTop";
 
 const Chats = () => {
-  return <h1>chat</h1>;
+  return (
+    <>
+      <div className="md:hidden mb-4">
+        <PhoneTop openSidebar={openSidebar} />
+      </div>
+      <div>hello</div>
+    </>
+  );
 };
 
 export default Chats;

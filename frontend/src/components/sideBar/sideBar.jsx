@@ -16,25 +16,30 @@
 // export default SideBar;
 
 import React from "react";
-import { Link } from "react-router-dom";
 import Logo from "./Logo/Logo";
 import Navigate from "./Navigate/Navigate";
 import Account from "./Account/Account";
+import { X } from "lucide-react";
 
-const SideBar = () => {
+const SideBar = ({ close }) => {
   return (
-    <div className="w-full h-full bg-slate-900 flex flex-col border-r border-slate-800">
-      {/* 1. Logo (Fixed at the Top) */}
+    <div className="w-full h-full bg-slate-900 flex flex-col border-r border-slate-800 relative">
+      {/* ⭐ Close button for phones */}
+      <button
+        onClick={close}
+        className="absolute top-3 right-3 bg-slate-700 p-2 rounded-lg md:hidden text-white hover:bg-slate-600 transition"
+      >
+        <X size={15} strokeWidth={2} />
+      </button>
+
       <div className="flex-shrink-0">
         <Logo />
       </div>
 
-      {/* 2. Navigation (Takes all remaining vertical space and allows scrolling) */}
       <div className="flex-grow overflow-y-auto custom-scrollbar">
         <Navigate />
       </div>
 
-      {/* 3. Account (Fixed at the Bottom) */}
       <div className="flex-shrink-0 border-t border-slate-800">
         <Account />
       </div>
