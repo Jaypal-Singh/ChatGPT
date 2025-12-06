@@ -22,15 +22,15 @@ const Dashboard = ({ openSidebar }) => {
 
         {/* 2. Stats Row */}
         {/* This assumes your Stats component renders the 4 cards horizontally */}
-        <div className="mb-6 h-35">
+        <div className="mb-6">
           <Stats />
         </div>
 
         {/* 3. Main Content Area (Split Layout) */}
         {/* Uses Grid: 3 parts total. Left takes 2 parts, Right takes 1 part */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-25 h-110 ">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10  ">
           {/* Left Column: Recent Conversations (Takes up 2/3 space) */}
-          <div className="lg:col-span-2 h-full">
+          <div className="lg:col-span-2 ">
             {/* Remove fixed height, let content decide height or use min-h */}
             <div>
               <RecentConversations />
@@ -38,7 +38,7 @@ const Dashboard = ({ openSidebar }) => {
           </div>
 
           {/* Right Column: Stacked Widgets (Takes up 1/3 space) */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 lg:justify-center lg:h-full">
             {/* Top Right Widget: Activity Overview */}
             <div>
               <AcvitivityOverniview />
