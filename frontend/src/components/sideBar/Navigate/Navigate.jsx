@@ -52,39 +52,61 @@ const Navigate = () => {
             <Link
               key={item.name}
               to={item.link}
-              className={`flex items-center w-full p-3 rounded-xl transition-all duration-200 group ${isActive
-                  ? "bg-violet-600 text-white shadow-lg shadow-violet-900/20"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+              className={`flex items-center w-full p-2 rounded-xl transition-all duration-300 group border relative overflow-hidden ${isActive
+                ? "bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border-cyan-500/50 shadow-[0_10px_20px_-5px_rgba(6,182,212,0.5)]"
+                : "border-transparent text-slate-400 hover:bg-white hover:text-slate-800 hover:shadow-[0_8px_20px_-5px_rgba(6,182,212,0.4)] hover:-translate-y-1 hover:border-cyan-500/20 mt-3"
                 }`}
             >
-              <item.icon className={`w-5 h-5 mr-3 ${isActive ? "text-white" : "text-slate-400 group-hover:text-white"}`} />
-              <span className="text-sm font-medium">{item.name}</span>
+              <item.icon
+                className={`w-5 h-5 mr-3 z-10 transition-colors ${isActive
+                  ? "text-cyan-400"
+                  : "text-slate-400 group-hover:text-cyan-600"
+                  }`}
+              />
+              <span
+                className={`text-sm font-medium z-10 ${isActive ? "text-cyan-50" : ""
+                  }`}
+              >
+                {item.name}
+              </span>
+
+              {/* Optional: subtle shine/gradient overlay for active state */}
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 pointer-events-none" />
+              )}
             </Link>
           );
         })}
       </nav>
 
+      {/* System Status Section */}
       <div className="px-4 mt-8">
-        <h5 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">System Status</h5>
+        <div className="bg-[#151a2d]/50 p-6 rounded-2xl border border-gray-700/50 relative overflow-hidden">
+          {/* Decorative blurred glow */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl -mr-12 -mt-12 pointer-events-none"></div>
 
-        <div className="space-y-3 bg-slate-800/30 p-4 rounded-xl border border-slate-800">
-          {statusItems.map((item) => (
-            <div
-              key={item.label}
-              className="flex items-center justify-between"
-            >
-              <div className="flex items-center">
-                <div
-                  className={`w-2 h-2 rounded-full mr-2.5 ${item.dotClass} shadow-[0_0_8px_rgba(0,0,0,0.3)]`}
-                ></div>
-                <span className="text-xs font-medium text-slate-400">{item.label}</span>
+          <h5 className="text-xs font-bold text-blue-200/80 uppercase tracking-widest mb-6 relative z-10">System Status</h5>
+
+          <div className="space-y-5 relative z-10">
+            {statusItems.map((item) => (
+              <div
+                key={item.label}
+                className="flex items-center justify-between group"
+              >
+                <div className="flex items-center">
+                  <div className="relative flex items-center justify-center w-3 h-3 mr-3">
+                    <div className={`absolute w-full h-full rounded-full ${item.dotClass} opacity-75 animate-pulse`}></div>
+                    <div className={`relative w-2 h-2 rounded-full ${item.dotClass}`}></div>
+                  </div>
+                  <span className="text-xs font-medium text-gray-400 group-hover:text-gray-300 transition-colors">{item.label}</span>
+                </div>
+
+                <span className={`text-xs font-bold ${item.color} font-mono bg-white/5 px-2 py-0.5 rounded text-[10px]`}>
+                  {item.value}
+                </span>
               </div>
-
-              <span className={`text-xs font-bold ${item.color} font-mono`}>
-                {item.value}
-              </span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </>
