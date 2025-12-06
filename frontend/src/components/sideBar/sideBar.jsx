@@ -23,7 +23,7 @@ import { X } from "lucide-react";
 
 const SideBar = ({ close }) => {
   return (
-    <div className="w-full h-full bg-slate-900 flex flex-col border-r border-slate-800 relative">
+    <div className="w-full h-full bg-[#202837] flex flex-col border-r border-gray-800/50 relative shadow-2xl">
       {/* ⭐ Close button for phones */}
       <button
         onClick={close}
