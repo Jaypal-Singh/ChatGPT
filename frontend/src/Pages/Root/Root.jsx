@@ -1,30 +1,3 @@
-// import React from "react";
-// import SideBar from "../../components/sideBar/sideBar";
-// import Dashboard from "../Dashboard/Dashboard";
-// import Chats from "../Chats/Chats";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-// const Root = () => {
-//   return (
-//     <div className="flex h-screen w-full overflow-hidden bg-[#0D1424]">
-//       {/* Sidebar - Fixed Width */}
-//       <div className="w-64 flex-shrink-0 h-full">
-//         <SideBar />
-//       </div>
-
-//       {/* Main Content - Takes remaining space */}
-//       <div className="flex-1 h-full overflow-y-auto relative customscrollbar">
-//         <Routes>
-//           <Route path="/" element={<Dashboard />} />
-//           <Route path="/chats" element={<Chats />} />
-//         </Routes>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Root;
-
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import SideBar from "../../components/sideBar/sideBar";
@@ -58,7 +31,7 @@ const Root = () => {
       <div className="flex-1 h-full overflow-y-auto customscrollbar relative">
         <Routes>
           <Route
-            path="/"
+            path="/dashboard"
             element={<Dashboard openSidebar={() => setSidebarOpen(true)} />}
           />
           <Route
