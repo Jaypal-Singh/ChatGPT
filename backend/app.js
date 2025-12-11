@@ -3,7 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import AuthRoutes from './routes/AuthRoutes.js';
+import AuthRoutes from './Routes/AuthRoutes.js';
 
 const app = express();
 

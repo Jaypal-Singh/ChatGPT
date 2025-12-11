@@ -14,7 +14,8 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("api/auth/v1/auth/signup", {
+      const API_URL = import.meta.env.VITE_APP_API_URL;
+      const response = await fetch(`${API_URL}/api/v1/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
