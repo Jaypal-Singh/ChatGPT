@@ -6,8 +6,10 @@ import MessageBreakdown from "./messageBreakdown/messageBreakdown";
 import Explore from "./explore/explore";
 import AcvitivityOverniview from "./activityOverview/AvitivityOverniview";
 import PhoneTop from "../../components/Phone/PhoneTop";
+import { useOutletContext } from "react-router-dom";
 
-const Dashboard = ({ openSidebar }) => {
+const Dashboard = () => {
+  const { openSidebar } = useOutletContext();
   return (
     <>
       <div className="md:hidden mb-4">

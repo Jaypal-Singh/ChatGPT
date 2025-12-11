@@ -11,6 +11,7 @@
 
 // export default Navigate;
 
+//2
 import React from "react";
 import { Gauge, MessageSquare } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -19,8 +20,8 @@ const Navigate = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Dashboard", icon: Gauge, link: "/dashboard" },
-    { name: "Chat", icon: MessageSquare, link: "/chats" },
+    { name: "Dashboard", icon: Gauge, link: "/root/dashboard" },
+    { name: "Chat", icon: MessageSquare, link: "/root/chats" },
   ];
   const statusItems = [
     {
