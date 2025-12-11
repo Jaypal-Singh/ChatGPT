@@ -1,14 +1,14 @@
-
-
 import React, { useState } from "react";
 import PhoneTop from "../../components/Phone/PhoneTop";
 import ChatHistory from "./chatHistory/ChatHistory";
 import ChatNavBar from "./chatNavBar/ChatNavBar";
 import ChatBody from "./chatBody/ChatBody";
 import ChatInput from "./chatInput/ChatInput";
+import { useOutletContext } from "react-router-dom";
 
-const Chats = ({ openSidebar }) => {
+const Chats = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const { openSidebar } = useOutletContext();
 
   const toggleHistory = () => {
     setIsHistoryOpen((prev) => !prev);

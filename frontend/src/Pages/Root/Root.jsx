@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import SideBar from "../../components/sideBar/sideBar";
 import Dashboard from "../Dashboard/Dashboard";
 import Chats from "../Chats/Chats";
+import { Outlet } from "react-router-dom";
 
 const Root = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,16 +30,8 @@ const Root = () => {
 
       {/* Main content */}
       <div className="flex-1 h-full overflow-y-auto customscrollbar relative">
-        <Routes>
-          <Route
-            path="/dashboard"
-            element={<Dashboard openSidebar={() => setSidebarOpen(true)} />}
-          />
-          <Route
-            path="/chats"
-            element={<Chats openSidebar={() => setSidebarOpen(true)} />}
-          />
-        </Routes>
+        <Outlet context={{ openSidebar: () => setSidebarOpen(true) }} />{" "}
+        {/* Loads Dashboard or Chats here */}
       </div>
     </div>
   );
