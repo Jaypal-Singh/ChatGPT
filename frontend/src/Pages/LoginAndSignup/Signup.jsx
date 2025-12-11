@@ -15,7 +15,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const API_URL = import.meta.env.VITE_APP_API_URL;
-      const response = await fetch(`${API_URL}/api/v1/auth/signup`, {
+      const response = await fetch("http://localhost:5000/api/v1/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,6 +27,7 @@ const Signup = () => {
 
       if (response.ok) {
         alert(data.message || "Signup Successful! Please Login.");
+       
         navigate("/login");
       } else {
         alert(data.message || "Signup failed");
