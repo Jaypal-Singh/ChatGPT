@@ -1,10 +1,8 @@
-import UserModel from "../Model/Usersmodel";
+import dotenv from "dotenv";
+dotenv.config();
+import UserModel from "../Model/UsersModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import express from "express";
-import router from express.Router();
-import verifyToken from "../Middleware/AuthMiddleware";
-import User from "../Model/UsersModel";
 
 const Signup = async (req, res, next) => {
   try {
@@ -78,7 +76,7 @@ const Login = async (req, res, next) => {
 const getuser = async(req, res, next) =>{
     try {
     const userId = req.user._id;
-    const user = await User.findById(userId);
+    const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -91,7 +89,7 @@ const getuser = async(req, res, next) =>{
 
 }
 
-module.exports = {
+export {
   Signup,
   Login,
   getuser,

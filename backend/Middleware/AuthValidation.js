@@ -1,5 +1,5 @@
 import Joi from "joi";
-import passport from "passport";
+
 
 const signUpValidation = (req, res, next) => {
   const schema = Joi.object({
@@ -28,4 +28,4 @@ const loginValidation = (req, res, next) => {
   next();
 };
 
-module.exports = { signUpValidation, loginValidation };
+export { signUpValidation, loginValidation };
