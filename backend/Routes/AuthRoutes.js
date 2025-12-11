@@ -11,4 +11,4 @@ router.post("/signup", signUpValidation, Signup);
 router.post("/login", loginValidation, Login);
 router.get("/getuser", verifyToken, getuser);
 
-module.exports = router;
+export default router;

@@ -13,8 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const API_URL = import.meta.env.VITE_APP_API_URL;
-      const response = await fetch(`${API_URL}/api/v1/auth/login`, {
+      const response = await fetch("http://localhost:5000/api/v1/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +25,9 @@ const Login = () => {
 
       if (response.ok) {
         alert(data.message || "Login Successful!");
-        
+        localStorage.setItem("token", data.jwtToken);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("name", data.name);
         navigate("/root/dashboard");
       } else {
         alert(data.message || "Login failed");
