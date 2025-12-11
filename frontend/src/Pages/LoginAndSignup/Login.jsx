@@ -1,25 +1,3 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-
-// const Login = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogin = async (event) => {
-//     event.preventDefault();
-
-//     navigate("/root/dashboard");
-//   };
-//   return (
-//     <>
-//       <form onSubmit={handleLogin}>
-//         <button type="submit">loginbtn</button>
-//       </form>
-//     </>
-//   );
-// };
-
-// export default Login;
-
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
@@ -32,9 +10,30 @@ const Login = () => {
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/root/dashboard"); // mock login success
+    try {
+      const response = await fetch("api/auth/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message || "Login Successful!");
+        
+        navigate("/root/dashboard");
+      } else {
+        alert(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
