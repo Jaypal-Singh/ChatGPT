@@ -108,7 +108,7 @@ const ChatNavBar = ({
         {/* 🔁 Toggle Button */}
         <button
           onClick={onToggleHistory}
-          className="text-gray-300 hover:text-white transition"
+          className="text-gray-300 hover:text-white transition cursor-pointer"
         >
           {isHistoryOpen ? (
             <ArrowLeft size={22} /> // when sidebar is open show >
