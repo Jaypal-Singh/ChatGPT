@@ -4,8 +4,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 
-
 import AuthRoutes from './Routes/AuthRoutes.js';
+import geminiRoutes from './Routes/geminiRoutes.js';
 
 const app = express();
 
@@ -17,6 +17,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', AuthRoutes);
-
+app.use('/api/v1/gemini', geminiRoutes);
 
 export default app;
