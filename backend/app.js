@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import AuthRoutes from './Routes/AuthRoutes.js';
 import geminiRoutes from './Routes/geminiRoutes.js';
+import conversationRoute from './Routes/conversationRoute.js'
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1/auth', AuthRoutes);
 app.use('/api/v1/gemini', geminiRoutes);
+app.use('/api/v1/conversations', conversationRoute)
 
 export default app;
