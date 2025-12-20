@@ -61,7 +61,10 @@
 
 import React from "react";
 
-const Stats = () => {
+const Stats = ({
+  totalConversationLength,
+  totalMessagesLength
+}) => {
   const StatCard = ({ title, value, change, icon, gradient, shadowColor }) => (
     <div
       className="p-5 rounded-2xl flex flex-col justify-between bg-[#151a2d] border border-gray-800 h-36 relative overflow-hidden group hover:border-gray-700 transition-all duration-300"
@@ -111,7 +114,7 @@ const Stats = () => {
     <div className="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-6">
       <StatCard
         title="Total Conversations"
-        value="5"
+        value={totalConversationLength}
         change="+12%"
         icon="fa-comment"
         gradient="from-blue-500 to-cyan-500"
@@ -119,7 +122,7 @@ const Stats = () => {
       />
       <StatCard
         title="Total Messages"
-        value="14"
+        value={totalMessagesLength}
         change="+8%"
         icon="fa-chart-bar"
         gradient="from-purple-500 to-pink-500"

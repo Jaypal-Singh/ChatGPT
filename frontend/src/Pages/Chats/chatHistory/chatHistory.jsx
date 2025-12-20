@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sparkles, Search, Plus, X } from "lucide-react";
 
-const ChatHistory = ({ onClose, onSelectConversation, conversations = [] }) => {
-  const [activeId, setActiveId] = useState(null);
+const ChatHistory = ({ onClose, onSelectConversation, conversations = [], activeId }) => {
   const [loading] = useState(false); // parent controls loading now
 
   const handleSelect = (chat) => {
-    setActiveId(chat._id);
-
     if (onSelectConversation) {
       onSelectConversation(chat._id);
     }
+   
 
     // auto close on mobile
     if (window.innerWidth < 768 && onClose) {
       onClose();
     }
+
   };
 
   return (
@@ -41,8 +40,8 @@ const ChatHistory = ({ onClose, onSelectConversation, conversations = [] }) => {
       <button
         className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg p-3 flex items-center justify-center gap-2 mb-4 hover:opacity-90 transition-opacity shadow-lg shadow-blue-900/20"
         onClick={() => {
-          setActiveId(null);
           if (onSelectConversation) onSelectConversation(null);
+
         }}
       >
         <Plus className="w-4 h-4" />

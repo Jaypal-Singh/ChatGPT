@@ -7,26 +7,66 @@ import PhoneTop from "../../components/Phone/PhoneTop";
 import { useOutletContext } from "react-router-dom";
 
 const Chats = () => {
+  const { openSidebar } = useOutletContext();
+
   const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [conversations, setConversations] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState("New Chat")
- const { openSidebar } = useOutletContext();
-
-
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-
+  const [totalmsg, setTotalMsg] = useState(0);
   const token = localStorage.getItem("token");
 
   const toggleHistory = () => {
     setIsHistoryOpen((prev) => !prev);
   };
 
+  const loadMessages = async (conversationId) => {
+    if (!conversationId) {
+      setMessages([]);
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/v1/messages/getMessage/${conversationId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      console.log(data.messages.length)
+      // setTotalMsg(data.message.length)
+     
+      if (data.success) {
+        setTotalMsg(data.totalMessageLength);
+        const formatted = data.messages.map((msg) => ({
+          sender: msg.sender,
+          text: msg.text,
+          time: new Date(msg.createdAt).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          
+        }));
+
+        setMessages(formatted);
+      }
+    } catch (err) {
+      console.error("Failed to load messages", err);
+    }
+  };
+
   useEffect(() => {
-    console.log("history load ")
-    const loadConversation = async () => {
+    loadMessages(activeId);
+  }, [activeId]);
+
+  useEffect(() => {
+    const loadConversationList = async () => {
       try {
         const res = await fetch(
           "http://localhost:5000/api/v1/conversations/getConversation",
@@ -46,9 +86,8 @@ const Chats = () => {
       }
     };
 
-    loadConversation();
-  }, [token, isHistoryOpen, activeId]);
-
+    loadConversationList();
+  }, [token, isHistoryOpen]);
 
 
   const sendMessage = async (text) => {
@@ -57,8 +96,20 @@ const Chats = () => {
       minute: "2-digit",
     });
 
-    setMessages((prev) => [...prev, { sender: "user", text, time }]);
+  
+    const userMsgObj = { sender: "user", text, time };
+
+    // console.log("PRIOR HISTORY (State):", messages);
+
+    setMessages((prev) => [...prev, userMsgObj]);
     setIsTyping(true);
+
+    const pastUserMessages = messages
+      .filter((msg) => msg.sender === "user")
+      .map((msg) => msg.text);
+
+    // console.log("CURRENT MESSAGE:", text);
+    // console.log("PAST USER MESSAGES (Sent to API):", pastUserMessages);
 
     try {
       const res = await fetch(
@@ -72,6 +123,7 @@ const Chats = () => {
           body: JSON.stringify({
             message: text,
             conversationId: activeId,
+            pastUserMessages, 
           }),
         }
       );
@@ -80,8 +132,16 @@ const Chats = () => {
 
       setMessages((prev) => [
         ...prev,
-        { sender: "ai", text: data?.reply || "No reply", time },
+        { sender: "ai", text: data.reply || "No reply", time },
       ]);
+
+      // ensure activeId stays updated
+      if (data.conversationId) {
+        setActiveId(data.conversationId);
+      }
+
+      // Update total message count
+      setTotalMsg((prev) => prev + 2);
     } catch (err) {
       console.error("Gemini error", err);
     } finally {
@@ -89,13 +149,15 @@ const Chats = () => {
     }
   };
 
-  const activeConversationTitle = conversations.find((c) => c._id === activeId)?.title || "New Chat";
+
+  const activeConversationTitle =
+    conversations.find((c) => c._id === activeId)?.title || "New Chat";
 
 
   return (
     <div className="flex h-screen w-full bg-[#0b0f19] text-white relative">
 
-      {/* Mobile top bar */}
+      {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20">
         <PhoneTop openSidebar={openSidebar} />
       </div>
@@ -109,19 +171,20 @@ const Chats = () => {
           conversations={conversations}
           onClose={() => setIsHistoryOpen(false)}
           onSelectConversation={setActiveId}
+          activeId={activeId}
         />
       </div>
 
       {/* Desktop ChatHistory */}
       <div
-        className={`hidden md:block transition-all duration-300 ${
-          isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
-        }`}
+        className={`hidden md:block transition-all duration-300 ${isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
+          }`}
       >
         <ChatHistory
           conversations={conversations}
           onClose={() => setIsHistoryOpen(false)}
           onSelectConversation={setActiveId}
+          activeId={activeId}
         />
       </div>
 
@@ -131,6 +194,7 @@ const Chats = () => {
           isHistoryOpen={isHistoryOpen}
           onToggleHistory={toggleHistory}
           title={activeConversationTitle}
+          messages={totalmsg}
         />
 
         <div className="flex-1 overflow-y-auto">

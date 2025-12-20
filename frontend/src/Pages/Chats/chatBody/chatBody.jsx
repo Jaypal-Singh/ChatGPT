@@ -12,6 +12,8 @@ const ChatBody = ({ messages, typing }) => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
+  const userName = localStorage.getItem('name')
+  
   return (
     <div className="w-full h-full px-6 py-6 overflow-y-auto customscrollbar space-y-10">
       {messages.map((msg, i) => (
@@ -71,7 +73,7 @@ const ChatBody = ({ messages, typing }) => {
                 </p>
               </div>
               <div className="hidden md:flex w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold">
-                J
+                {userName.charAt(0).toUpperCase()}
               </div>
             </div>
           )}

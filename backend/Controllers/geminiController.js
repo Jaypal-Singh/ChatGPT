@@ -6,11 +6,12 @@ import { GoogleGenAI } from "@google/genai";
 import MessageModel from "../Model/MessageModel.js";
 import ConversationModel from "../Model/ConversationModel.js";
 
-const GEMINI_API_KEY = "AIzaSyDkJ3zWpJ-F70I08CdvZ-r8-9duj8lgh_U";
+const GEMINI_API_KEY = "AIzaSyD2K3ZAQiG3qsFk1rY_yP4BIz_qBjnJ5Mw";
 
 const getGeminiResponse = async (req, res) => {
   try {
-    const { message, conversationId } = req.body;
+    const { message, conversationId, pastUserMessages} = req.body;
+    console.log('pastData from user - > ', pastUserMessages)
     const userId = req.user._id;
    
     if(!userId){
@@ -57,10 +58,17 @@ const getGeminiResponse = async (req, res) => {
     
     const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
+   
+    let contextStr = "";
+    if (pastUserMessages && Array.isArray(pastUserMessages) && pastUserMessages.length > 0) {
+      contextStr = `PREVIOUS USER MESSAGES REQUESTS FOR CONTEXT:\n${pastUserMessages.join("\n")}\n\n`;
+    }
+
     const emojiInstruction =
       "Use relevant emojis occasionally. Keep formatting clean.";
 
-    const fullMsg = `${message}\n\n${emojiInstruction}`;
+  
+    const fullMsg = `${contextStr}CURRENT USER MESSAGE:\n${message}\n\nSYSTEM INSTRUCTION: ${emojiInstruction}`;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
