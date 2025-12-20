@@ -18,6 +18,11 @@ const messageSchema = new mongoose.Schema(
     text: {
       type: String,
       required: true
+    },
+
+    responseTime: {
+      type: Number, // in seconds
+      default: null
     }
   },
   { timestamps: true }

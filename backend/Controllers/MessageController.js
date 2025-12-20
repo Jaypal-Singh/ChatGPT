@@ -156,6 +156,27 @@ const getMessagesByTime = async (req, res) => {
       .json({ success: false, message: "Failed to fetch today's messages" });
   }
 };
-export { getMessage, getMessageLength, getMessagesByTime, getAllMessages };
 
-// export { getMessage, getMessageLength };
+const getAverageResponseTime = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const conversations = await ConversationModel.find({ userId });
+    const conversationIds = conversations.map(c => c._id);
+
+    // Aggregate to get average responseTime for AI messages
+    const result = await MessageModel.aggregate([
+      { $match: { conversationId: { $in: conversationIds }, sender: 'ai', responseTime: { $ne: null } } },
+      { $group: { _id: null, avgResponseTime: { $avg: '$responseTime' } } }
+    ]);
+
+    const avgResponseTime = result.length > 0 ? result[0].avgResponseTime : 0;
+
+    res.status(200).json({ success: true, avgResponseTime });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch average response time" });
+  }
+};
+
+export { getMessage, getMessageLength, getMessagesByTime, getAverageResponseTime };
