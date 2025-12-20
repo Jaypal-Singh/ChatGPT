@@ -8,6 +8,16 @@ router.get("/getMessageLength",  verifyToken, getMessageLength);
 router.get("/getMessagesByTime",  verifyToken,  getMessagesByTime);
 router.get("/getAverageResponseTime", verifyToken, getAverageResponseTime);
 
+import {
+  getMessage,
+  getMessageLength,
+  getMessagesByTime,
+  getAllMessages,
+} from "../Controllers/MessageController.js";
+router.get("/getMessage/:conversationId", verifyToken, getMessage);
+router.get("/getMessageLength", verifyToken, getMessageLength);
+router.get("/getMessagesByTime", verifyToken, getMessagesByTime);
+router.get("/getAllMessages", verifyToken, getAllMessages);
 
 // router.post("/create", verifyToken, createConversation);
 

@@ -131,7 +131,7 @@ const Stats = ({
       />
       <StatCard
         title="Today's Messages"
-        value="0"
+        value={todayMessage}
         change="+24%"
         icon="fa-calendar-check"
         gradient="from-emerald-400 to-emerald-600"

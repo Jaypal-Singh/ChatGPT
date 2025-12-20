@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
-import UserModel from "../Model/UsersModel.js";
+import UserModel from "../Model/Usersmodel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
@@ -73,8 +73,8 @@ const Login = async (req, res, next) => {
   }
 };
 
-const getuser = async(req, res, next) =>{
-    try {
+const getuser = async (req, res, next) => {
+  try {
     const userId = req.user._id;
     const user = await UserModel.findById(userId);
     if (!user) {
@@ -86,11 +86,6 @@ const getuser = async(req, res, next) =>{
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
-
-}
-
-export {
-  Signup,
-  Login,
-  getuser,
 };
+
+export { Signup, Login, getuser };

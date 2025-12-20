@@ -26,49 +26,47 @@ const Dashboard = () => {
     const getMessagesLength = async ()=>{
       try{
         const res = await fetch(
-        "http://localhost:5000/api/v1/messages/getMessageLength",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+          "http://localhost:5000/api/v1/messages/getMessageLength",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      const data = await res.json();
-      if(data.success){
-        setTotalMessagesLength(data.totalMessages)
+        const data = await res.json();
+        if (data.success) {
+          setTotalMessagesLength(data.totalMessages);
+        }
+      } catch (err) {
+        console.log(err);
       }
-      }catch(err){
-        console.log(err)
-      }
-    }
+    };
     getMessagesLength();
-  }, [token])
+  }, [token]);
 
-
-  useEffect(()=>{
-    const getMessagesByTime = async ()=>{
-      try{
+  useEffect(() => {
+    const getMessagesByTime = async () => {
+      try {
         const res = await fetch(
-        "http://localhost:5000/api/v1/messages/getMessagesByTime",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          "http://localhost:5000/api/v1/messages/getMessagesByTime",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const data = await res.json();
+        if (data.success) {
+          setTodayMessage(data.todayMessages);
+          setyesterdayMessage(data.yesterdayMessages);
+          setWeekMessage(data.weekMessages);
         }
-      );
-
-      const data = await res.json();
-      if(data.success){
-        setTodayMessage(data.todayMessages)
-        setyesterdayMessage(data.yesterdayMessages)
-        setWeekMessage(data.weekMessages)
-
+      } catch (err) {
+        console.log(err);
       }
-      }catch(err){
-        console.log(err)
-      }
-    }
+    };
     getMessagesByTime();
   }, [token])
 
@@ -110,10 +108,12 @@ const Dashboard = () => {
         } catch (err) {
           console.error("Failed to load conversations", err);
         }
-      };
-  
-      loadConversationList();
-    }, [token]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllMessages();
+  }, [token]);
 
   return (
     <>
@@ -144,9 +144,7 @@ const Dashboard = () => {
           <div className="lg:col-span-2 ">
             {/* Remove fixed height, let content decide height or use min-h */}
             <div>
-              <RecentConversations
-                allConversations={conversations}
-               />
+              <RecentConversations allConversations={conversations} />
             </div>
           </div>
 
@@ -154,12 +152,16 @@ const Dashboard = () => {
           <div className="flex flex-col gap-6 lg:justify-center lg:h-full">
             {/* Top Right Widget: Activity Overview */}
             <div>
-              <AcvitivityOverniview />
+              <AcvitivityOverniview
+                todayMessage={todayMessage}
+                yesterdayMessage={yesterdayMessage}
+                weekMessage={weekMessage}
+              />
             </div>
 
             {/* Bottom Right Widget: Message Breakdown */}
             <div>
-              <MessageBreakdown />
+              <MessageBreakdown usermsgCount={usermsg} AImsgCount={AImsg} />
             </div>
           </div>
         </div>
