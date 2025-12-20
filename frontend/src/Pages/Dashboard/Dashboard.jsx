@@ -12,7 +12,8 @@ const Dashboard = () => {
   const { openSidebar } = useOutletContext();
   const [conversations, setConversations] = useState([]);
   const [totalConversation, setTotalConversation]= useState(0);
-  const [totalMessagesLength, setTotalMessagesLength] = useState(0)
+  const [totalMessagesLength, setTotalMessagesLength] = useState(0);
+  const [avgResponseTime, setAvgResponseTime] = useState(0);
   const [todayMessage, setTodayMessage] = useState(0)
   const [yesterdayMessage, setyesterdayMessage] = useState(0)
   const [weekMessage, setWeekMessage] = useState(0)
@@ -71,6 +72,25 @@ const Dashboard = () => {
     getMessagesByTime();
   }, [token])
 
+  useEffect(() => {
+    const getAvgResponseTime = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/v1/messages/getAverageResponseTime', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        if (data.success) {
+          setAvgResponseTime(data.avgResponseTime);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAvgResponseTime();
+  }, [token]);
+
 
    useEffect(() => {
       const loadConversationList = async () => {
@@ -113,6 +133,7 @@ const Dashboard = () => {
           <Stats
           totalConversationLength={totalConversation}
           totalMessagesLength={totalMessagesLength}
+          avgResponseTime={avgResponseTime}
           />
         </div>
 

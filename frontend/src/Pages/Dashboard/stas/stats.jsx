@@ -63,7 +63,8 @@ import React from "react";
 
 const Stats = ({
   totalConversationLength,
-  totalMessagesLength
+  totalMessagesLength,
+  avgResponseTime
 }) => {
   const StatCard = ({ title, value, change, icon, gradient, shadowColor }) => (
     <div
@@ -138,7 +139,7 @@ const Stats = ({
       />
       <StatCard
         title="Avg Response Time"
-        value="1.2s"
+        value={`${avgResponseTime ? avgResponseTime.toFixed(1) : 0}s`}
         change="-15%"
         icon="fa-bolt"
         gradient="from-amber-400 to-orange-600"
