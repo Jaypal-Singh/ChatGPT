@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TopBar from "./topBar/TopBar";
 import Stats from "./stas/stats";
 import RecentConversations from "./recentConversations/recentConversations";
@@ -10,6 +10,91 @@ import { useOutletContext } from "react-router-dom";
 
 const Dashboard = () => {
   const { openSidebar } = useOutletContext();
+  const [conversations, setConversations] = useState([]);
+  const [totalConversation, setTotalConversation]= useState(0);
+  const [totalMessagesLength, setTotalMessagesLength] = useState(0)
+  const [todayMessage, setTodayMessage] = useState(0)
+  const [yesterdayMessage, setyesterdayMessage] = useState(0)
+  const [weekMessage, setWeekMessage] = useState(0)
+
+
+ 
+  const token = localStorage.getItem('token')
+
+  useEffect(()=>{
+    const getMessagesLength = async ()=>{
+      try{
+        const res = await fetch(
+        "http://localhost:5000/api/v1/messages/getMessageLength",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      if(data.success){
+        setTotalMessagesLength(data.totalMessages)
+      }
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getMessagesLength();
+  }, [token])
+
+
+  useEffect(()=>{
+    const getMessagesByTime = async ()=>{
+      try{
+        const res = await fetch(
+        "http://localhost:5000/api/v1/messages/getMessagesByTime",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      if(data.success){
+        setTodayMessage(data.todayMessages)
+        setyesterdayMessage(data.yesterdayMessages)
+        setWeekMessage(data.weekMessages)
+
+      }
+      }catch(err){
+        console.log(err)
+      }
+    }
+    getMessagesByTime();
+  }, [token])
+
+
+   useEffect(() => {
+      const loadConversationList = async () => {
+        try {
+          const res = await fetch(
+            "http://localhost:5000/api/v1/conversations/getConversation",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          const data = await res.json();
+          setTotalConversation(data.length)
+          setConversations(data || []);
+        } catch (err) {
+          console.error("Failed to load conversations", err);
+        }
+      };
+  
+      loadConversationList();
+    }, [token]);
+
   return (
     <>
       <div className="md:hidden mb-4">
@@ -25,7 +110,10 @@ const Dashboard = () => {
         {/* 2. Stats Row */}
         {/* This assumes your Stats component renders the 4 cards horizontally */}
         <div className="mb-6">
-          <Stats />
+          <Stats
+          totalConversationLength={totalConversation}
+          totalMessagesLength={totalMessagesLength}
+          />
         </div>
 
         {/* 3. Main Content Area (Split Layout) */}
@@ -35,7 +123,9 @@ const Dashboard = () => {
           <div className="lg:col-span-2 ">
             {/* Remove fixed height, let content decide height or use min-h */}
             <div>
-              <RecentConversations />
+              <RecentConversations
+                allConversations={conversations}
+               />
             </div>
           </div>
 
