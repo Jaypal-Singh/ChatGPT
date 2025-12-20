@@ -64,7 +64,8 @@ import React from "react";
 const Stats = ({
   totalConversationLength,
   totalMessagesLength,
-  avgResponseTime
+  avgResponseTime,
+  todayMessage
 }) => {
   const StatCard = ({ title, value, change, icon, gradient, shadowColor }) => (
     <div
