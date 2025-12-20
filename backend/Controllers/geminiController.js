@@ -6,7 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import MessageModel from "../Model/MessageModel.js";
 import ConversationModel from "../Model/ConversationModel.js";
 
-const GEMINI_API_KEY = "AIzaSyD2K3ZAQiG3qsFk1rY_yP4BIz_qBjnJ5Mw";
+const GEMINI_API_KEY = "AIzaSyBzzQrk7qvhJ_7z4_jpsK13LhyatBFFSxE";
 
 const getGeminiResponse = async (req, res) => {
   try {
@@ -70,10 +70,13 @@ const getGeminiResponse = async (req, res) => {
   
     const fullMsg = `${contextStr}CURRENT USER MESSAGE:\n${message}\n\nSYSTEM INSTRUCTION: ${emojiInstruction}`;
 
+    const startTime = Date.now();
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: fullMsg
     });
+    const endTime = Date.now();
+    const responseTime = (endTime - startTime) / 1000; // in seconds
 
     const aiText = response.text;
 
@@ -81,7 +84,8 @@ const getGeminiResponse = async (req, res) => {
     await MessageModel.create({
       conversationId: conversation._id,
       sender: "ai",
-      text: aiText
+      text: aiText,
+      responseTime: responseTime
     });
 
     

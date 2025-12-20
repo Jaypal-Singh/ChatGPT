@@ -11,19 +11,20 @@ import { useOutletContext } from "react-router-dom";
 const Dashboard = () => {
   const { openSidebar } = useOutletContext();
   const [conversations, setConversations] = useState([]);
-  const [totalConversation, setTotalConversation] = useState(0);
+  const [totalConversation, setTotalConversation]= useState(0);
   const [totalMessagesLength, setTotalMessagesLength] = useState(0);
-  const [todayMessage, setTodayMessage] = useState(0);
-  const [yesterdayMessage, setyesterdayMessage] = useState(0);
-  const [weekMessage, setWeekMessage] = useState(0);
-  const [usermsg, setusermsg] = useState(0);
-  const [AImsg, setAImsg] = useState(0);
+  const [avgResponseTime, setAvgResponseTime] = useState(0);
+  const [todayMessage, setTodayMessage] = useState(0)
+  const [yesterdayMessage, setyesterdayMessage] = useState(0)
+  const [weekMessage, setWeekMessage] = useState(0)
 
-  const token = localStorage.getItem("token");
 
-  useEffect(() => {
-    const getMessagesLength = async () => {
-      try {
+ 
+  const token = localStorage.getItem('token')
+
+  useEffect(()=>{
+    const getMessagesLength = async ()=>{
+      try{
         const res = await fetch(
           "http://localhost:5000/api/v1/messages/getMessageLength",
           {
@@ -67,47 +68,45 @@ const Dashboard = () => {
       }
     };
     getMessagesByTime();
-  }, [token]);
+  }, [token])
 
   useEffect(() => {
-    const loadConversationList = async () => {
+    const getAvgResponseTime = async () => {
       try {
-        const res = await fetch(
-          "http://localhost:5000/api/v1/conversations/getConversation",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        setTotalConversation(data.length);
-        setConversations(data || []);
-      } catch (err) {
-        console.error("Failed to load conversations", err);
-      }
-    };
-
-    loadConversationList();
-  }, [token]);
-
-  useEffect(() => {
-    const getAllMessages = async () => {
-      try {
-        const res = await fetch(
-          "http://localhost:5000/api/v1/messages/getAllMessages",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+        const res = await fetch('http://localhost:5000/api/v1/messages/getAverageResponseTime', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await res.json();
         if (data.success) {
-          setusermsg(data.usermsgCount);
-          setAImsg(data.AImsgCount);
+          setAvgResponseTime(data.avgResponseTime);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAvgResponseTime();
+  }, [token]);
+
+
+   useEffect(() => {
+      const loadConversationList = async () => {
+        try {
+          const res = await fetch(
+            "http://localhost:5000/api/v1/conversations/getConversation",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+  
+          const data = await res.json();
+          setTotalConversation(data.length)
+          setConversations(data || []);
+        } catch (err) {
+          console.error("Failed to load conversations", err);
         }
       } catch (err) {
         console.log(err);
@@ -132,9 +131,9 @@ const Dashboard = () => {
         {/* This assumes your Stats component renders the 4 cards horizontally */}
         <div className="mb-6">
           <Stats
-            totalConversationLength={totalConversation}
-            totalMessagesLength={totalMessagesLength}
-            todayMessage={todayMessage}
+          totalConversationLength={totalConversation}
+          totalMessagesLength={totalMessagesLength}
+          avgResponseTime={avgResponseTime}
           />
         </div>
 

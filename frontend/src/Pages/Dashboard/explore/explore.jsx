@@ -1,6 +1,7 @@
 import React from "react";
-
+import { useNavigate } from "react-router-dom";
 const Explore = () => {
+  const navigate = useNavigate()
   return (
     <div className="col-span-12 mt-4">
       <div
@@ -31,6 +32,7 @@ const Explore = () => {
             py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center gap-2
             border border-white/20 mx-auto md:mx-0 w-full md:w-auto
           "
+         onClick={() => navigate('/root/chats')}
         >
           Start Chatting
           <i className="fas fa-arrow-right text-sm"></i>
