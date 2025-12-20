@@ -46,7 +46,7 @@ const getMessage = async (req, res) => {
 const getAllMessages = async (req, res) => {
   try {
     const userId = req.user._id;
-  
+
     const conversations = await ConversationModel.find({ userId });
     const conversationIds = conversations.map((c) => c._id);
 
@@ -161,12 +161,17 @@ const getAverageResponseTime = async (req, res) => {
     const userId = req.user._id;
 
     const conversations = await ConversationModel.find({ userId });
-    const conversationIds = conversations.map(c => c._id);
+    const conversationIds = conversations.map((c) => c._id);
 
-    
     const result = await MessageModel.aggregate([
-      { $match: { conversationId: { $in: conversationIds }, sender: 'ai', responseTime: { $ne: null } } },
-      { $group: { _id: null, avgResponseTime: { $avg: '$responseTime' } } }
+      {
+        $match: {
+          conversationId: { $in: conversationIds },
+          sender: "ai",
+          responseTime: { $ne: null },
+        },
+      },
+      { $group: { _id: null, avgResponseTime: { $avg: "$responseTime" } } },
     ]);
 
     const avgResponseTime = result.length > 0 ? result[0].avgResponseTime : 0;
@@ -174,8 +179,17 @@ const getAverageResponseTime = async (req, res) => {
     res.status(200).json({ success: true, avgResponseTime });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Failed to fetch average response time" });
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch average response time",
+    });
   }
 };
 
-export { getMessage, getMessageLength, getMessagesByTime, getAverageResponseTime,getAllMessages };
+export {
+  getMessage,
+  getMessageLength,
+  getMessagesByTime,
+  getAverageResponseTime,
+  getAllMessages,
+};

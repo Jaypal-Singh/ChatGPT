@@ -13,15 +13,15 @@ const getConversation = async (req, res) => {
       { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by user
       {
         $lookup: {
-          from: 'messages', // Join with messages collection
-          localField: '_id',
-          foreignField: 'conversationId',
-          as: 'messages'
-        }
+          from: "messages", // Join with messages collection
+          localField: "_id",
+          foreignField: "conversationId",
+          as: "messages",
+        },
       },
-      { $addFields: { messageCount: { $size: '$messages' } } }, // Count messages
+      { $addFields: { messageCount: { $size: "$messages" } } }, // Count messages
       { $project: { messages: 0 } }, // Exclude the messages array to save bandwidth
-      { $sort: { lastMessageAt: -1 } } // Sort by latest
+      { $sort: { lastMessageAt: -1 } }, // Sort by latest
     ]);
     return res.status(200).json(conversations);
   } catch (err) {
@@ -30,5 +30,4 @@ const getConversation = async (req, res) => {
   }
 };
 
-
-export {getConversation, };
+export { getConversation };

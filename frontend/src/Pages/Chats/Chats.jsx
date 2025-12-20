@@ -39,9 +39,9 @@ const Chats = () => {
       );
 
       const data = await res.json();
-      console.log(data.messages.length)
+      console.log(data.messages.length);
       // setTotalMsg(data.message.length)
-     
+
       if (data.success) {
         setTotalMsg(data.totalMessageLength);
         const formatted = data.messages.map((msg) => ({
@@ -51,7 +51,6 @@ const Chats = () => {
             hour: "2-digit",
             minute: "2-digit",
           }),
-          
         }));
 
         setMessages(formatted);
@@ -89,14 +88,12 @@ const Chats = () => {
     loadConversationList();
   }, [token, isHistoryOpen]);
 
-
   const sendMessage = async (text) => {
     const time = new Date().toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
     });
 
-  
     const userMsgObj = { sender: "user", text, time };
 
     // console.log("PRIOR HISTORY (State):", messages);
@@ -123,7 +120,7 @@ const Chats = () => {
           body: JSON.stringify({
             message: text,
             conversationId: activeId,
-            pastUserMessages, 
+            pastUserMessages,
           }),
         }
       );
@@ -149,14 +146,11 @@ const Chats = () => {
     }
   };
 
-
   const activeConversationTitle =
     conversations.find((c) => c._id === activeId)?.title || "New Chat";
 
-
   return (
     <div className="flex h-screen w-full bg-[#0b0f19] text-white relative">
-
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20">
         <PhoneTop openSidebar={openSidebar} />
@@ -177,8 +171,9 @@ const Chats = () => {
 
       {/* Desktop ChatHistory */}
       <div
-        className={`hidden md:block transition-all duration-300 ${isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
-          }`}
+        className={`hidden md:block transition-all duration-300 ${
+          isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
+        }`}
       >
         <ChatHistory
           conversations={conversations}
