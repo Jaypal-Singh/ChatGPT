@@ -6,8 +6,8 @@ const ChatNavBar = ({
   isHistoryOpen,
   onToggleHistory,
   onNewChat,
-  title = title,
-  messages = 10,
+  title,
+  messages,
 }) => {
   return (
     <div className="w-full px-4 md:px-8 py-4 border-b border-slate-800 bg-[#0b0f19] flex items-center justify-between">
