@@ -46,8 +46,7 @@ const getMessage = async (req, res) => {
 const getAllMessages = async (req, res) => {
   try {
     const userId = req.user._id;
-    // Messages don't have a `userId` field; they reference a conversation.
-    // First fetch user's conversations, then get messages for those conversations.
+  
     const conversations = await ConversationModel.find({ userId });
     const conversationIds = conversations.map((c) => c._id);
 
@@ -164,7 +163,7 @@ const getAverageResponseTime = async (req, res) => {
     const conversations = await ConversationModel.find({ userId });
     const conversationIds = conversations.map(c => c._id);
 
-    // Aggregate to get average responseTime for AI messages
+    
     const result = await MessageModel.aggregate([
       { $match: { conversationId: { $in: conversationIds }, sender: 'ai', responseTime: { $ne: null } } },
       { $group: { _id: null, avgResponseTime: { $avg: '$responseTime' } } }
@@ -179,4 +178,4 @@ const getAverageResponseTime = async (req, res) => {
   }
 };
 
-export { getMessage, getMessageLength, getMessagesByTime, getAverageResponseTime };
+export { getMessage, getMessageLength, getMessagesByTime, getAverageResponseTime,getAllMessages };
