@@ -63,7 +63,8 @@ import React from "react";
 
 const Stats = ({
   totalConversationLength,
-  totalMessagesLength
+  totalMessagesLength,
+  todayMessage,
 }) => {
   const StatCard = ({ title, value, change, icon, gradient, shadowColor }) => (
     <div
@@ -130,7 +131,7 @@ const Stats = ({
       />
       <StatCard
         title="Today's Messages"
-        value="0"
+        value={todayMessage}
         change="+24%"
         icon="fa-calendar-check"
         gradient="from-emerald-400 to-emerald-600"

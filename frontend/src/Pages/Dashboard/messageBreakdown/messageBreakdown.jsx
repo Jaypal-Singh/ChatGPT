@@ -46,7 +46,7 @@
 
 import React from "react";
 
-const MessageBreakdown = () => {
+const MessageBreakdown = ({ usermsgCount, AImsgCount }) => {
   const DetailCard = ({ items, footer }) => (
     <div className="flex flex-col gap-4 p-6 pt-4">
       {items.map((item, index) => (
@@ -80,8 +80,8 @@ const MessageBreakdown = () => {
       {/* Scrollable content */}
       <DetailCard
         items={[
-          { label: "Your Messages", value: "5" },
-          { label: "AI Responses", value: "5" },
+          { label: "Your Messages", value: usermsgCount },
+          { label: "AI Responses", value: AImsgCount },
         ]}
         footer={{ label: "Avg message length", value: "100 chars" }}
       />
