@@ -7,9 +7,15 @@ import Explore from "./explore/explore";
 import AcvitivityOverniview from "./activityOverview/AvitivityOverniview";
 import PhoneTop from "../../components/Phone/PhoneTop";
 import { useOutletContext } from "react-router-dom";
+// Optional: import SkeletonTheme here if you want consistent colors across all loaders
+// import { SkeletonTheme } from 'react-loading-skeleton'; 
+// import 'react-loading-skeleton/dist/skeleton.css';
 
 const Dashboard = () => {
   const { openSidebar } = useOutletContext();
+  // Add the loading state hook
+  const [loading, setLoading] = useState(true);
+
   const [conversations, setConversations] = useState([]);
   const [totalConversation, setTotalConversation] = useState(0);
   const [totalMessagesLength, setTotalMessagesLength] = useState(0);
@@ -19,8 +25,6 @@ const Dashboard = () => {
   const [weekMessage, setWeekMessage] = useState(0)
   const [usermsg, setUsermsg] = useState(0)
   const [AImsg, setAImsg] = useState(0)
-
-
 
   const token = localStorage.getItem('token')
 
@@ -132,6 +136,9 @@ const Dashboard = () => {
         setConversations(data || []);
       } catch (err) {
         console.error("Failed to load conversations", err);
+      } finally {
+        // Set loading to false after the last fetch operation is complete
+        setLoading(false); 
       }
     };
     loadConversationList();
@@ -150,9 +157,10 @@ const Dashboard = () => {
         </div>
 
         {/* 2. Stats Row */}
-        {/* This assumes your Stats component renders the 4 cards horizontally */}
+        {/* Pass the loading state to the Stats component */}
         <div className="mb-6">
           <Stats
+            loading={loading}
             totalConversationLength={totalConversation}
             totalMessagesLength={totalMessagesLength}
             avgResponseTime={avgResponseTime}
@@ -161,21 +169,22 @@ const Dashboard = () => {
         </div>
 
         {/* 3. Main Content Area (Split Layout) */}
-        {/* Uses Grid: 3 parts total. Left takes 2 parts, Right takes 1 part */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10  ">
           {/* Left Column: Recent Conversations (Takes up 2/3 space) */}
           <div className="lg:col-span-2 ">
-            {/* Remove fixed height, let content decide height or use min-h */}
+            {/* Pass the loading state to RecentConversations */}
             <div>
-              <RecentConversations allConversations={conversations} />
+              <RecentConversations allConversations={conversations} loading={loading} />
             </div>
           </div>
 
           {/* Right Column: Stacked Widgets (Takes up 1/3 space) */}
           <div className="flex flex-col gap-6 lg:justify-center lg:h-full">
             {/* Top Right Widget: Activity Overview */}
+             {/* Pass the loading state to AcvitivityOverniview */}
             <div>
               <AcvitivityOverniview
+                loading={loading}
                 todayMessage={todayMessage}
                 yesterdayMessage={yesterdayMessage}
                 weekMessage={weekMessage}
@@ -183,8 +192,9 @@ const Dashboard = () => {
             </div>
 
             {/* Bottom Right Widget: Message Breakdown */}
+             {/* Pass the loading state to MessageBreakdown */}
             <div>
-              <MessageBreakdown usermsgCount={usermsg} AImsgCount={AImsg} />
+              <MessageBreakdown usermsgCount={usermsg} AImsgCount={AImsg} loading={loading} />
             </div>
           </div>
         </div>
