@@ -1,4 +1,3 @@
-
 import React from "react";
 import { ArrowLeft, ArrowRight, Sparkles, Plus } from "lucide-react";
 
@@ -10,7 +9,7 @@ const ChatNavBar = ({
   messages,
 }) => {
   return (
-    <div className="w-full px-4 md:px-8 py-4 border-b border-slate-800 bg-[#0b0f19] flex items-center justify-between">
+    <div className="w-full px-4 md:px-8 py-4 border-b border-gray-700/50 bg-gray-900/70 backdrop-blur-sm flex items-center justify-between">
       {/* LEFT SIDE */}
       <div className="flex items-center gap-4">
         {/* 🔁 Toggle Button */}
@@ -26,7 +25,7 @@ const ChatNavBar = ({
         </button>
 
         {/* Chat Icon */}
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-md">
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/25">
           <Sparkles size={20} className="text-white" />
         </div>
 
@@ -42,7 +41,7 @@ const ChatNavBar = ({
       {/* New Chat Button */}
       <button
         onClick={onNewChat}
-        className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-5 py-2 rounded-lg shadow-sm flex items-center gap-2 hover:opacity-90 transition-all"
+        className="bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold px-5 py-2 rounded-lg flex items-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-cyan-500/25"
       >
         <Plus size={18} />
         New Chat

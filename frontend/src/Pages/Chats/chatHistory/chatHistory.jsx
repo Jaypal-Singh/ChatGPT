@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Sparkles, Search, Plus, X } from "lucide-react";
 
-const ChatHistory = ({ onClose, onSelectConversation, conversations = [], activeId }) => {
+const ChatHistory = ({
+  onClose,
+  onSelectConversation,
+  conversations = [],
+  activeId,
+}) => {
   const [loading] = useState(false); // parent controls loading now
 
   const handleSelect = (chat) => {
     if (onSelectConversation) {
       onSelectConversation(chat._id);
     }
-   
 
     // auto close on mobile
     if (window.innerWidth < 768 && onClose) {
       onClose();
     }
-
   };
 
   return (
-    <div className="w-72 md:w-80 h-full bg-[#0b0f19] border-r border-gray-800 flex flex-col p-4 relative">
-
+    <div className="w-72 md:w-80 h-full bg-gray-900/70 backdrop-blur-sm border-r border-gray-800 flex flex-col p-4 relative">
       {/* Close button (mobile) */}
       <button
         onClick={onClose}
@@ -30,18 +32,17 @@ const ChatHistory = ({ onClose, onSelectConversation, conversations = [], active
 
       {/* Header */}
       <div className="flex items-center gap-2 mb-6 mt-2">
-        <div className="p-1.5 bg-blue-600 rounded-lg">
-          <Sparkles className="w-4 h-4 text-white" />
+        <div className="p-1.5 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg shadow-lg shadow-cyan-500/25">
+          <Sparkles className="w-5 h-5 text-white" />
         </div>
-        <h2 className="text-white font-semibold text-sm">Chat History</h2>
+        <h2 className="text-white font-semibold text-md">Chat History</h2>
       </div>
 
       {/* New Conversation */}
       <button
-        className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg p-3 flex items-center justify-center gap-2 mb-4 hover:opacity-90 transition-opacity shadow-lg shadow-blue-900/20"
+        className="w-full bg-gradient-to-br from-cyan-500 to-purple-600 text-white rounded-lg p-3 flex items-center justify-center gap-2 mb-4 hover:opacity-90 transition-opacity shadow-lg shadow-cyan-500/25"
         onClick={() => {
           if (onSelectConversation) onSelectConversation(null);
-
         }}
       >
         <Plus className="w-4 h-4" />
@@ -54,7 +55,7 @@ const ChatHistory = ({ onClose, onSelectConversation, conversations = [], active
         <input
           type="text"
           placeholder="Search..."
-          className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-[#151a2d] border border-gray-800 text-gray-300 text-sm focus:outline-none focus:border-blue-500/50"
+          className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-gray-800/40 border border-gray-800 text-gray-300 text-sm focus:outline-none focus:border-white/50"
         />
       </div>
 
@@ -79,7 +80,7 @@ const ChatHistory = ({ onClose, onSelectConversation, conversations = [], active
             className={`rounded-xl p-4 cursor-pointer transition-all border ${
               activeId === chat._id
                 ? "bg-gradient-to-br from-blue-50 to-purple-50 border-transparent shadow"
-                : "bg-[#151a2d] border-gray-800 hover:bg-[#1c2237]"
+                : "bg-gray-800/40 border-gray-600/30 hover:bg-gray-700/60 hover:border-gray-500/50"
             }`}
           >
             <h3

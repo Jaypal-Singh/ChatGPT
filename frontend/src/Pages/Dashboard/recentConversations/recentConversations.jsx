@@ -2,15 +2,17 @@ import React from "react";
 
 const RecentConversations = ({ allConversations = [] }) => {
   const ConversationItem = ({ title, date, messages }) => (
-    <div className="bg-[#111a2e] p-4 rounded-xl border border-white/5 hover:bg-[#162040] transition">
-      <p className="text-lg font-medium text-gray-100 truncate">
+    <div className=" group bg-gray-800/60 p-4 rounded-xl border border-white/5 hover:bg-gray-700/30 hover:border-cyan-500/30 transition-all duration-300">
+      <p className="text-lg font-medium text-gray-100 truncate transition-all duration-300 group-hover:text-cyan-300 ">
         {title || "Untitled Chat"}
       </p>
 
-      <div className="text-gray-400 text-xs mt-1 flex justify-between">
-        <span>{date}</span>
+      <div className="text-gray-400 text-xs mt-1 flex justify-between ">
+        <span className="transition-all duration-300 text-gray-400 group-hover:text-cyan-300 ">
+          {date}
+        </span>
 
-        <span className="bg-slate-800 text-gray-300 px-2 py-0.5 rounded-full text-[11px]">
+        <span className="bg-slate-800 text-gray-300 px-2 py-0.5 rounded-full text-[11px] transition-all duration-300 group-hover:text-cyan-300">
           {messages} messages
         </span>
       </div>
@@ -20,15 +22,17 @@ const RecentConversations = ({ allConversations = [] }) => {
   return (
     <div
       className="
-        card p-0 rounded-xl shadow-xl bg-[#1A1E2F] border border-white/5
+        card p-0 rounded-xl bg-gray-800/60 border border-white/5
         flex flex-col 
         max-h-[450px] md:max-h-[500px]
-        overflow-y-auto customscrollbar
+        overflow-y-auto customscrollbar shadow-lg shadow-cyan-500/10
       "
     >
       {/* Sticky Header */}
-      <h2 className="sticky top-0 z-10 bg-[#1A1E2F] pt-4 pb-3 px-6
-        text-xl font-semibold text-white border-b border-slate-800">
+      <h2
+        className="sticky top-0 z-10 bg-gray-800 pt-4 pb-3 px-6
+        text-xl font-semibold text-white border-b border-slate-800"
+      >
         Recent Conversations
       </h2>
 
@@ -51,7 +55,7 @@ const RecentConversations = ({ allConversations = [] }) => {
                 hour: "2-digit",
                 minute: "2-digit",
               })}
-              messages={conv.messageCount || 0} 
+              messages={conv.messageCount || 0}
             />
           ))
         )}

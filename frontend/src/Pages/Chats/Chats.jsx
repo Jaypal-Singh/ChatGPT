@@ -150,7 +150,7 @@ const Chats = () => {
     conversations.find((c) => c._id === activeId)?.title || "New Chat";
 
   return (
-    <div className="flex h-screen w-full bg-[#0b0f19] text-white relative">
+    <div className="flex h-screen w-full bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white relative">
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20">
         <PhoneTop openSidebar={openSidebar} />
