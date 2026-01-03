@@ -34,12 +34,13 @@ import Login from "../LoginAndSignup/Login";
 import Signup from "../LoginAndSignup/Signup";
 import LoginSignupRoot from "../LoginAndSignup/LoginSignupRoot";
 import Root from "../Root/Root";
+import LoginSignup from "../../LoginSignup";
 
 const AllRoutes = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LoginSignupRoot />} />
+        <Route path="/" element={<LoginSignup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/root" element={<Root />}>

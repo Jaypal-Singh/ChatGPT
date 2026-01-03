@@ -14,15 +14,13 @@ const Dashboard = () => {
   const [totalConversation, setTotalConversation] = useState(0);
   const [totalMessagesLength, setTotalMessagesLength] = useState(0);
   const [avgResponseTime, setAvgResponseTime] = useState(0);
-  const [todayMessage, setTodayMessage] = useState(0)
-  const [yesterdayMessage, setyesterdayMessage] = useState(0)
-  const [weekMessage, setWeekMessage] = useState(0)
-  const [usermsg, setUsermsg] = useState(0)
-  const [AImsg, setAImsg] = useState(0)
+  const [todayMessage, setTodayMessage] = useState(0);
+  const [yesterdayMessage, setyesterdayMessage] = useState(0);
+  const [weekMessage, setWeekMessage] = useState(0);
+  const [usermsg, setUsermsg] = useState(0);
+  const [AImsg, setAImsg] = useState(0);
 
-
-
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const getMessagesLength = async () => {
@@ -70,16 +68,19 @@ const Dashboard = () => {
       }
     };
     getMessagesByTime();
-  }, [token])
+  }, [token]);
 
   useEffect(() => {
     const getAvgResponseTime = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/v1/messages/getAverageResponseTime', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          "http://localhost:5000/api/v1/messages/getAverageResponseTime",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await res.json();
         if (data.success) {
           setAvgResponseTime(data.avgResponseTime);
@@ -128,7 +129,7 @@ const Dashboard = () => {
         );
 
         const data = await res.json();
-        setTotalConversation(data.length)
+        setTotalConversation(data.length);
         setConversations(data || []);
       } catch (err) {
         console.error("Failed to load conversations", err);
@@ -143,7 +144,7 @@ const Dashboard = () => {
         <PhoneTop openSidebar={openSidebar} />
       </div>
 
-      <div className="min-h-screen bg-[#0D1424] text-white p-6 font-sans">
+      <div className="min-h-screen text-white p-6 font-sans bg-gradient-to-br from-gray-900 via-slate-900 to-black">
         {/* 1. Header Section */}
         <div className="mb-6 h-30">
           <TopBar />

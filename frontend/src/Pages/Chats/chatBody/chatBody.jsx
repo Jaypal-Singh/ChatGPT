@@ -68,7 +68,7 @@ const ChatBody = ({ messages, typing }) => {
           {msg.sender === "user" && (
             <div className="flex gap-3 items-end max-w-[85%] md:max-w-[70%]">
               <div>
-                <div className="bg-gradient-to-r from-sky-500 to-purple-500 text-white rounded-xl px-5 py-3 shadow-xl">
+                <div className="bg-gradient-to-r from-sky-500 to-purple-500 text-white rounded-xl px-5 py-3 shadow-lg shadow-cyan-500/25">
                   {msg.text}
                 </div>
                 <p className="text-[11px] text-gray-400 mt-1 text-right">

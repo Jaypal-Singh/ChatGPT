@@ -48,7 +48,7 @@ import React from "react";
 
 const MessageBreakdown = ({ usermsgCount, AImsgCount }) => {
   const DetailCard = ({ items, footer }) => (
-    <div className="flex flex-col gap-4 p-6 pt-4">
+    <div className="flex flex-col gap-4 p-6 pt-4 bg-gray-800/60">
       {items.map((item, index) => (
         <div key={index} className="flex justify-between text-sm text-gray-300">
           <span>{item.label}</span>
@@ -67,12 +67,12 @@ const MessageBreakdown = ({ usermsgCount, AImsgCount }) => {
   return (
     <div
       className="
-      card rounded-xl shadow-lg bg-[#1A1E2F] border border-white/5
-      flex flex-col max-h-[300px] overflow-y-auto customscrollbar
+      card rounded-xl bg-gray-800/60 border border-white/5
+      flex flex-col max-h-[300px] overflow-y-auto customscrollbar shadow-lg shadow-cyan-500/10
     "
     >
       {/* ⭐ Sticky Header */}
-      <h2 className="sticky top-0 z-10 bg-[#1A1E2F] pt-4 pb-3 px-6 text-xl font-semibold text-white flex items-center gap-2 border-b border-slate-800">
+      <h2 className="sticky top-0 z-10 bg-gray-800/60 pt-4 pb-3 px-6 text-xl font-semibold text-white flex items-center gap-2 border-b border-slate-800">
         <i className="fas fa-envelope-open-text text-purple-400"></i>
         Message Breakdown
       </h2>
