@@ -6,6 +6,7 @@ const ChatHistory = ({
   onSelectConversation,
   conversations = [],
   activeId,
+  setTotalMsg,
 }) => {
   const [loading] = useState(false); // parent controls loading now
 
@@ -43,6 +44,7 @@ const ChatHistory = ({
         className="w-full bg-gradient-to-br from-cyan-500 to-purple-600 text-white rounded-lg p-3 flex items-center justify-center gap-2 mb-4 hover:opacity-90 transition-opacity shadow-lg shadow-cyan-500/25"
         onClick={() => {
           if (onSelectConversation) onSelectConversation(null);
+          if (setTotalMsg) setTotalMsg(0);
         }}
       >
         <Plus className="w-4 h-4" />
