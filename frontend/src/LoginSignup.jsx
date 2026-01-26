@@ -14,10 +14,15 @@ const LoginSignup = () => {
         <div className="content">
           <h2>Sign In</h2>
 
-          <form className="form">
+          <form className="form" onSubmit={handleSubmit}>
             <div className="inputBox">
               <input type="text" required />
               <i>Username</i>
+            </div>
+
+            <div className="inputBox">
+              <input type="text" required />
+              <i>Email</i>
             </div>
 
             <div className="inputBox">
