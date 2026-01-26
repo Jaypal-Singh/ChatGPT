@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { User, Mail, Lock } from "lucide-react";
+import styles from "./Loginsignup.module.css";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Signup = () => {
 
       if (response.ok) {
         alert(data.message || "Signup Successful! Please Login.");
-       
+
         navigate("/login");
       } else {
         alert(data.message || "Signup failed");
@@ -38,72 +39,134 @@ const Signup = () => {
     }
   };
 
+  // return (
+  //   <div className="min-h-screen flex items-center justify-center bg-[#0D1424]">
+  //     <div className="w-full max-w-md bg-[#151a2d] border border-slate-800 rounded-2xl shadow-2xl p-8">
+  //       <h2 className="text-2xl font-bold text-white text-center mb-2">
+  //         Create Account ✨
+  //       </h2>
+  //       <p className="text-sm text-gray-400 text-center mb-6">
+  //         Start your AI journey today
+  //       </p>
+
+  //       <form onSubmit={handleSubmit} className="space-y-4">
+  //         {/* Name */}
+  //         <div className="relative">
+  //           <User className="absolute left-3 top-3.5 text-gray-500" size={18} />
+  //           <input
+  //             type="text"
+  //             placeholder="Full Name"
+  //             required
+  //             value={form.name}
+  //             onChange={(e) => setForm({ ...form, name: e.target.value })}
+  //             className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
+  //           />
+  //         </div>
+
+  //         {/* Email */}
+  //         <div className="relative">
+  //           <Mail className="absolute left-3 top-3.5 text-gray-500" size={18} />
+  //           <input
+  //             type="email"
+  //             placeholder="Email Address"
+  //             required
+  //             value={form.email}
+  //             onChange={(e) => setForm({ ...form, email: e.target.value })}
+  //             className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
+  //           />
+  //         </div>
+
+  //         {/* Password */}
+  //         <div className="relative">
+  //           <Lock className="absolute left-3 top-3.5 text-gray-500" size={18} />
+  //           <input
+  //             type="password"
+  //             placeholder="Password"
+  //             required
+  //             value={form.password}
+  //             onChange={(e) => setForm({ ...form, password: e.target.value })}
+  //             className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
+  //           />
+  //         </div>
+
+  //         <button
+  //           type="submit"
+  //           className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:opacity-90 transition"
+  //         >
+  //           Sign Up
+  //         </button>
+  //       </form>
+
+  //       <p className="text-sm text-gray-400 text-center mt-6">
+  //         Already have an account?{" "}
+  //         <Link to="/login" className="text-cyan-400 hover:underline">
+  //           Login
+  //         </Link>
+  //       </p>
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0D1424]">
-      <div className="w-full max-w-md bg-[#151a2d] border border-slate-800 rounded-2xl shadow-2xl p-8">
-        <h2 className="text-2xl font-bold text-white text-center mb-2">
-          Create Account ✨
-        </h2>
-        <p className="text-sm text-gray-400 text-center mb-6">
-          Start your AI journey today
-        </p>
+    <section>
+      {/* Background grid spans */}
+      {Array.from({ length: 200 }).map((_, index) => (
+        <span key={index}></span>
+      ))}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
-          <div className="relative">
-            <User className="absolute left-3 top-3.5 text-gray-500" size={18} />
-            <input
-              type="text"
-              placeholder="Full Name"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
-            />
-          </div>
+      {/* Sign In Box */}
+      <div className={styles.signin}>
+        <div className={styles.content}>
+          <h2>Sign In</h2>
+          <form className={styles.form} onSubmit={handleSubmit}>
+            <div className={styles.inputBox}>
+              <input
+                type="text"
+                required
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+              />
+              <i>Username</i>
+            </div>
 
-          {/* Email */}
-          <div className="relative">
-            <Mail className="absolute left-3 top-3.5 text-gray-500" size={18} />
-            <input
-              type="email"
-              placeholder="Email Address"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
-            />
-          </div>
+            <div className={styles.inputBox}>
+              <input
+                type="email"
+                required
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+              <i>Email</i>
+            </div>
 
-          {/* Password */}
-          <div className="relative">
-            <Lock className="absolute left-3 top-3.5 text-gray-500" size={18} />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 rounded-xl bg-[#0b0f19] border border-slate-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-cyan-500 shadow-inner"
-            />
-          </div>
+            <div className={styles.inputBox}>
+              <input
+                type="password"
+                required
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+              />
+              <i>Password</i>
+            </div>
 
-          <button
-            type="submit"
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-semibold shadow-lg hover:opacity-90 transition"
-          >
-            Sign Up
-          </button>
-        </form>
+            <div className={styles.inputBox}>
+              <input type="submit" value="Signup" />
+            </div>
 
-        <p className="text-sm text-gray-400 text-center mt-6">
-          Already have an account?{" "}
-          <Link to="/login" className="text-cyan-400 hover:underline">
-            Login
-          </Link>
-        </p>
+            <p className="text-sm text-gray-400 text-center mt-6">
+              Already have an account?{" "}
+              <Link
+                to="/login"
+                className="bg-gradient-to-r from-sky-400 to-purple-400 
+           bg-clip-text text-transparent hover:underline"
+              >
+                Login{" "}
+              </Link>{" "}
+            </p>
+          </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 
