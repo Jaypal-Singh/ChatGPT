@@ -6,7 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import MessageModel from "../Model/MessageModel.js";
 import ConversationModel from "../Model/ConversationModel.js";
 
-const GEMINI_API_KEY = "AIzaSyDxoJo2VoK1ZYG5qkXG_3YRSDW3O8gSR_U";
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const getGeminiResponse = async (req, res) => {
   try {
