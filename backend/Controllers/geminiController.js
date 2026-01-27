@@ -6,7 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import MessageModel from "../Model/MessageModel.js";
 import ConversationModel from "../Model/ConversationModel.js";
 
-const GEMINI_API_KEY = "AIzaSyBzzQrk7qvhJ_7z4_jpsK13LhyatBFFSxE";
+const GEMINI_API_KEY = "AIzaSyDxoJo2VoK1ZYG5qkXG_3YRSDW3O8gSR_U";
 
 const getGeminiResponse = async (req, res) => {
   try {
@@ -45,6 +45,8 @@ const getGeminiResponse = async (req, res) => {
         return res.status(404).json({ message: "Conversation not found" });
       }
     }
+
+    console.log(conversation);
 
     await MessageModel.create({
       conversationId: conversation._id,
