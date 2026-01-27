@@ -4,6 +4,9 @@ import { Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
 const ChatBody = ({ messages, typing }) => {
   const bottomRef = useRef(null);
 
@@ -11,7 +14,7 @@ const ChatBody = ({ messages, typing }) => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
-  const userName = localStorage.getItem("name");
+  const userName = localStorage.getItem("name") || "U";
 
   return (
     <div className="w-full h-full px-6 py-6 overflow-y-auto customscrollbar space-y-10">
@@ -22,49 +25,73 @@ const ChatBody = ({ messages, typing }) => {
             msg.sender === "user" ? "justify-end" : "justify-start"
           }`}
         >
+          {/* ================= AI MESSAGE ================= */}
           {msg.sender === "ai" && (
-            <div className="flex gap-3 items-end max-w-[100%] md:max-w-[80%] ">
+            <div className="flex gap-3 items-end max-w-[100%] md:max-w-[80%]">
               <div className=" hidden md:flex w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
 
               <div>
-                <div
-                  className="
-                        bg-slate-800/70 border border-slate-700 rounded-xl px-5 py-3 
-                        text-gray-200 shadow-md
-                        max-h-[60vh] overflow-y-auto
-                        break-words whitespace-pre-wrap 
-                        customscrollbar
-                    "
-                >
+                <div className="bg-slate-800/70 border border-slate-700 rounded-xl px-5 py-3 text-gray-200 shadow-md max-h-[60vh] overflow-y-auto customscrollbar">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
                       p: ({ children }) => (
                         <p className="mb-4 leading-relaxed">{children}</p>
                       ),
+
                       h1: ({ children }) => (
                         <h1 className="text-xl font-bold mb-4">{children}</h1>
                       ),
+
                       h2: ({ children }) => (
                         <h2 className="text-lg font-semibold mb-3">
                           {children}
                         </h2>
                       ),
+
                       li: ({ children }) => (
                         <li className="ml-4 list-disc mb-2">{children}</li>
                       ),
+
+                      /* 🔥 INLINE + BLOCK CODE (ChatGPT Style) */
+                      code({ inline, className, children }) {
+                        const match = /language-(\w+)/.exec(className || "");
+
+                        // Inline code
+                        if (inline) {
+                          return (
+                            <code className="bg-black/40 text-pink-400 px-1 py-0.5 rounded text-sm">
+                              {children}
+                            </code>
+                          );
+                        }
+
+                        // Code block
+                        return (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match ? match[1] : "javascript"}
+                            PreTag="div"
+                            className="rounded-xl my-4 text-sm"
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        );
+                      },
                     }}
                   >
                     {msg.text}
                   </ReactMarkdown>
                 </div>
+
                 <p className="text-[11px] text-gray-400 mt-1">{msg.time}</p>
               </div>
             </div>
           )}
 
+          {/* ================= USER MESSAGE ================= */}
           {msg.sender === "user" && (
             <div className="flex gap-3 items-end max-w-[85%] md:max-w-[70%]">
               <div>
@@ -75,7 +102,8 @@ const ChatBody = ({ messages, typing }) => {
                   {msg.time}
                 </p>
               </div>
-              <div className="hidden md:flex w-9 h-9 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold">
+
+              <div className="hidden md:flex w-9 h-9 rounded-full bg-sky-500 text-white items-center justify-center font-bold">
                 {userName.charAt(0).toUpperCase()}
               </div>
             </div>
@@ -83,7 +111,7 @@ const ChatBody = ({ messages, typing }) => {
         </div>
       ))}
 
-      {/* 🔥 AI LOADER (typing indicator) */}
+      {/* ================= AI TYPING LOADER ================= */}
       {typing && (
         <div className="flex justify-start">
           <div className="flex gap-3 items-end max-w-[85%] md:max-w-[70%]">
@@ -92,12 +120,9 @@ const ChatBody = ({ messages, typing }) => {
             </div>
 
             <div className="bg-slate-800/70 border border-slate-700 rounded-xl px-5 py-3 shadow-md flex items-center gap-2">
-              {/* Animated loader dots */}
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce"></span>
-                <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-150"></span>
-                <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-300"></span>
-              </div>
+              <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce"></span>
+              <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-150"></span>
+              <span className="w-2 h-2 bg-gray-300 rounded-full animate-bounce delay-300"></span>
             </div>
           </div>
         </div>
