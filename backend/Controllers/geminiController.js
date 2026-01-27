@@ -63,7 +63,7 @@ const getGeminiResponse = async (req, res) => {
       pastUserMessages.length > 0
     ) {
       contextStr = `PREVIOUS USER MESSAGES REQUESTS FOR CONTEXT:\n${pastUserMessages.join(
-        "\n"
+        "\n",
       )}\n\n`;
     }
 
