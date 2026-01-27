@@ -225,7 +225,7 @@ const Chats = () => {
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [totalmsg, setTotalMsg] = useState(0);
 
-  // 🔥 NEW: key to force ChatHistory reload
+
   const [historyReloadKey, setHistoryReloadKey] = useState(0);
 
   const token = localStorage.getItem("token");
@@ -299,7 +299,7 @@ const Chats = () => {
     };
 
     loadConversationList();
-  }, [token, isHistoryOpen, historyReloadKey]); // 🔥 reload when key changes
+  }, [token, isHistoryOpen, historyReloadKey]); 
 
   // ---------------- SEND MESSAGE ----------------
   const sendMessage = async (text) => {
@@ -313,7 +313,7 @@ const Chats = () => {
     setMessages((prev) => [...prev, userMsgObj]);
     setIsTyping(true);
 
-    // 🔥 FORCE ChatHistory remount
+   
     setHistoryReloadKey((prev) => prev + 1);
 
     const pastUserMessages = messages
@@ -381,6 +381,9 @@ const Chats = () => {
           onClose={() => setIsHistoryOpen(false)}
           onSelectConversation={setActiveId}
           activeId={activeId}
+          setTotalMsg={setTotalMsg}
+          setMessages={setMessages}
+          onRefresh={() => setHistoryReloadKey((prev) => prev + 1)}
         />
       </div>
 
@@ -396,6 +399,7 @@ const Chats = () => {
           activeId={activeId}
           setTotalMsg={setTotalMsg}
           setMessages={setMessages}
+          onRefresh={() => setHistoryReloadKey((prev) => prev + 1)}
         />
       </div>
 
