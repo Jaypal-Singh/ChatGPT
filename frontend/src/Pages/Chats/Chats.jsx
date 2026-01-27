@@ -338,11 +338,14 @@ const Chats = () => {
       );
 
       const data = await res.json();
+      console.log(data);
 
       setMessages((prev) => [
         ...prev,
         { sender: "ai", text: data.reply || "No reply", time },
       ]);
+
+      console.log(data.conversationId);
 
       if (data.conversationId) {
         setActiveId(data.conversationId);
@@ -356,9 +359,11 @@ const Chats = () => {
     }
   };
 
+  console.log(activeId);
   const activeConversationTitle =
     conversations.find((c) => c._id === activeId)?.title || "New Chat";
 
+  console.log(activeConversationTitle);
   return (
     <div className="flex h-screen w-full bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white relative">
       {/* Mobile Top Bar */}
@@ -372,7 +377,6 @@ const Chats = () => {
           ${isHistoryOpen ? "translate-x-0" : "-translate-x-full"} w-72`}
       >
         <ChatHistory
-          key={`mobile-${historyReloadKey}`}
           conversations={conversations}
           onClose={() => setIsHistoryOpen(false)}
           onSelectConversation={setActiveId}
@@ -382,17 +386,16 @@ const Chats = () => {
 
       {/* Desktop ChatHistory */}
       <div
-        className={`hidden md:block transition-all duration-300 ${
-          isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
-        }`}
+        className={`hidden md:block transition-all duration-300 ${isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
+          }`}
       >
         <ChatHistory
-          key={`desktop-${historyReloadKey}`}
           conversations={conversations}
           onClose={() => setIsHistoryOpen(false)}
           onSelectConversation={setActiveId}
           activeId={activeId}
           setTotalMsg={setTotalMsg}
+          setMessages={setMessages}
         />
       </div>
 
@@ -405,6 +408,8 @@ const Chats = () => {
           title={activeConversationTitle}
           messages={totalmsg}
           setTotalMsg={setTotalMsg}
+          setMessages={setMessages}
+          setActiveId={setActiveId}
         />
 
         <div className="flex-1 overflow-y-auto">

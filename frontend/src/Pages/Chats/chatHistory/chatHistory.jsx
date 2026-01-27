@@ -7,11 +7,14 @@ const ChatHistory = ({
   conversations = [],
   activeId,
   setTotalMsg,
+  setMessages,
+  setActiveId,
 }) => {
   const [loading] = useState(false); // parent controls loading now
 
   const handleSelect = (chat) => {
     if (onSelectConversation) {
+      console.log(chat._id);
       onSelectConversation(chat._id);
     }
 
@@ -45,6 +48,8 @@ const ChatHistory = ({
         onClick={() => {
           if (onSelectConversation) onSelectConversation(null);
           if (setTotalMsg) setTotalMsg(0);
+          if (setMessages) setMessages([]);
+          if (setActiveId) setActiveId(null);
         }}
       >
         <Plus className="w-4 h-4" />
