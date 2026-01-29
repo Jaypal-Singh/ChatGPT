@@ -48,6 +48,7 @@ const Chats = () => {
         setTotalMsg(data.totalMessageLength);
 
         const formatted = data.messages.map((msg) => ({
+          _id: msg._id,
           sender: msg.sender,
           text: msg.text,
           time: new Date(msg.createdAt).toLocaleTimeString([], {
@@ -179,9 +180,8 @@ const Chats = () => {
 
       {/* Desktop ChatHistory */}
       <div
-        className={`hidden md:block transition-all duration-300 ${
-          isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
-        }`}
+        className={`hidden md:block transition-all duration-300 ${isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
+          }`}
       >
         <ChatHistory
           conversations={conversations}
@@ -212,6 +212,8 @@ const Chats = () => {
             messages={messages}
             typing={isTyping}
             conversationsId={activeId}
+            setMessages={setMessages}
+            setTotalMsg={setTotalMsg}
           />
         </div>
 
