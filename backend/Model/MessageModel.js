@@ -20,10 +20,18 @@ const messageSchema = new mongoose.Schema(
       required: true
     },
 
-    responseTime: {
-      type: Number, // in seconds
+    replyTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
       default: null
-    }
+    },
+
+    responseTime: {
+      type: Number,
+      default: null
+    },
+
+
   },
   { timestamps: true }
 );

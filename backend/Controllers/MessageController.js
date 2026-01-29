@@ -186,10 +186,152 @@ const getAverageResponseTime = async (req, res) => {
   }
 };
 
+const editMessage = async (req, res) => {
+  try {
+    const { messageId } = req.params;
+    const { text } = req.body;
+    const userId = req.user._id;
+
+    if (!text) {
+      return res.status(400).json({
+        success: false,
+        message: "Text is required",
+      });
+    }
+
+  
+    const message = await MessageModel.findById(messageId);
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        message: "Message not found",
+      });
+    }
+
+    if (message.sender !== "user") {
+      return res.status(403).json({
+        success: false,
+        message: "You can only edit your own messages",
+      });
+    }
+
+   
+    const conversation = await ConversationModel.findOne({
+      _id: message.conversationId,
+      userId: userId,
+    });
+
+    if (!conversation) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to edit this message",
+      });
+    }
+
+   
+    message.text = text;
+    await message.save();
+    const linkedAiMessage = await MessageModel.findOne({
+      replyTo: message._id,
+    });
+
+    if (linkedAiMessage) {
+      await MessageModel.findByIdAndDelete(linkedAiMessage._id);
+    }
+
+
+    res.status(200).json({
+      success: true,
+      data: message,
+      message: "Message updated and previous AI response deleted (if any)",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to edit message",
+    });
+  }
+};
+
+
+const deleteMessage = async (req, res) => {
+  try {
+    console.log("delete api hit");
+    const mesaageId = req.params.messageId;
+    const userId = req.user._id;
+
+    const userMessage = await MessageModel.findById(mesaageId);
+
+    if (!userMessage) {
+      return res.status(404).json({
+        success: false,
+        message: "Message not found",
+      });
+    }
+
+    const aiMessage = await MessageModel.findOne({
+      replyTo: userMessage._id,
+    });
+
+    if (aiMessage) {
+      await MessageModel.findByIdAndDelete(aiMessage._id);
+    }
+    
+    // Always delete the user message
+    await MessageModel.findByIdAndDelete(userMessage._id);
+
+    res.status(200).json({
+      success: true,
+      message: "Message deleted successfully",
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete message",
+    });
+  }
+};
+
+
+const getMessageByUserText = async (req, res) => {
+  try {
+
+    const userId = req.user._id;
+   
+    const {text, conversationsId} = req.body;
+    console.log(text)
+    console.log(conversationsId)
+
+    const messages = await MessageModel.find({
+      text: { $regex: text, $options: "i" },
+      conversationId: conversationsId
+    });
+
+    console.log(messages[0]._id)
+    res.status(200).json({
+      success: true,
+      data: messages
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch messages by user text",
+    });
+  }
+};
+
 export {
   getMessage,
   getMessageLength,
   getMessagesByTime,
   getAverageResponseTime,
   getAllMessages,
+  editMessage,
+  getMessageByUserText,
+  deleteMessage,
 };
