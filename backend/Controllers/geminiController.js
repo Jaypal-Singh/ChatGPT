@@ -48,7 +48,7 @@ const getGeminiResponse = async (req, res) => {
 
     console.log(conversation);
 
-    await MessageModel.create({
+    const userMsg = await MessageModel.create({
       conversationId: conversation._id,
       sender: "user",
       text: message,
@@ -78,7 +78,7 @@ const getGeminiResponse = async (req, res) => {
       contents: fullMsg,
     });
     const endTime = Date.now();
-    const responseTime = (endTime - startTime) / 1000; // in seconds
+    const responseTime = (endTime - startTime) / 1000;
 
     const aiText = response.text;
 
@@ -87,6 +87,7 @@ const getGeminiResponse = async (req, res) => {
       sender: "ai",
       text: aiText,
       responseTime: responseTime,
+      replyTo: userMsg._id,
     });
 
     conversation.lastMessage = aiText;
@@ -107,4 +108,77 @@ const getGeminiResponse = async (req, res) => {
   }
 };
 
-export { getGeminiResponse };
+const regenerateResponse = async (req, res) => {
+  try {
+    const { messageId, pastUserMessages } = req.body;
+    const userId = req.user._id;
+
+    if (!messageId) {
+      return res.status(400).json({ message: "Message ID is required" });
+    }
+
+    // 1. Find the User Message (that was just edited)
+    const userMessage = await MessageModel.findById(messageId);
+    if (!userMessage) {
+      return res.status(404).json({ message: "Message not found" });
+    }
+
+    if (userMessage.sender !== "user") {
+      return res.status(400).json({ message: "Can only regenerate for user messages" });
+    }
+
+    // 2. Find Conversation to update stats/context
+    const conversation = await ConversationModel.findById(userMessage.conversationId);
+    if (!conversation) {
+      return res.status(404).json({ message: "Conversation not found" });
+    }
+
+    // 3. Generate new AI response
+    const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+    let contextStr = "";
+    if (pastUserMessages && Array.isArray(pastUserMessages) && pastUserMessages.length > 0) {
+      contextStr = `PREVIOUS USER MESSAGES REQUESTS FOR CONTEXT:\n${pastUserMessages.join("\n")}\n\n`;
+    }
+    const emojiInstruction = "Use relevant emojis occasionally. Keep formatting clean.";
+    const fullMsg = `${contextStr}CURRENT USER MESSAGE:\n${userMessage.text}\n\nSYSTEM INSTRUCTION: ${emojiInstruction}`;
+
+    const startTime = Date.now();
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: fullMsg,
+    });
+    const endTime = Date.now();
+    const responseTime = (endTime - startTime) / 1000;
+    const aiText = response.text;
+
+    // 4. Create new AI Message linked to the User Message
+    const newAiMessage = await MessageModel.create({
+      conversationId: conversation._id,
+      sender: "ai",
+      text: aiText,
+      responseTime: responseTime,
+      replyTo: userMessage._id,
+    });
+
+    // 5. Update Conversation
+    conversation.lastMessage = aiText;
+    conversation.lastSender = "ai";
+    conversation.lastMessageAt = new Date();
+    await conversation.save();
+
+    return res.status(200).json({
+      success: true,
+      reply: aiText,
+      message: newAiMessage // Return full object if needed by frontend
+    });
+
+  } catch (error) {
+    console.error("Regeneration error:", error);
+    return res.status(500).json({
+      message: "Regeneration failed",
+      error: error.message,
+    });
+  }
+};
+
+export { getGeminiResponse, regenerateResponse };
