@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import "./chatBody.css";
+// import "./chatBody.css";
 const BASE_URL = "http://localhost:5000";
 const getToken = () => localStorage.getItem("token") || "";
 
@@ -89,6 +89,24 @@ const AiMessage = memo(({ msg }) => (
     </div>
   </div>
 ));
+
+
+/* ------------------- AI TYPING LOADER ------------------- */
+const AiTypingLoader = () => (
+  <div className="flex gap-3 items-end max-w-[80%]">
+    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 flex items-center justify-center">
+      <Sparkles className="w-5 h-5 text-white" />
+    </div>
+
+    <div className="bg-slate-800/70 border border-slate-700 rounded-xl px-5 py-3">
+      <div className="flex gap-1">
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:150ms]" />
+        <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:300ms]" />
+      </div>
+    </div>
+  </div>
+);
 
 /* ------------------- MAIN CHAT BODY ------------------- */
 const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
@@ -205,14 +223,14 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
   /* ------------------- UI ------------------- */
   return (
     <div className="w-full h-full px-6 py-6 overflow-y-auto customscrollbar space-y-10">
-      <div
+      {/* <div
         className={`pointer-events-none sticky top-0 h-0.5 z-20 overflow-hidden
     ${typing ? "opacity-100" : "opacity-0"}
     transition-opacity duration-300
   `}
       >
         <div className="w-full h-full animate-linear-gradient shadow-loader" />
-      </div>
+      </div> */}
       {messages.map((msg, i) => (
         <div
           key={msg._id} // ✅ Correct key
@@ -323,6 +341,12 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
               <div className="hidden md:flex w-9 h-9 rounded-full bg-sky-500 text-white items-center justify-center font-bold">
                 {userName.charAt(0).toUpperCase()}
               </div>
+            </div>
+          )}
+
+          {typing && (
+            <div className="flex justify-start">
+              <AiTypingLoader />
             </div>
           )}
         </div>
