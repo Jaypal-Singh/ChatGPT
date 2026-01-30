@@ -100,7 +100,8 @@ const Chats = () => {
       minute: "2-digit",
     });
 
-    const userMsgObj = { sender: "user", text, time };
+    const tempId = Date.now().toString();
+    const userMsgObj = { _id: tempId, sender: "user", text, time };
 
     setMessages((prev) => [...prev, userMsgObj]);
     setIsTyping(true);
@@ -131,10 +132,26 @@ const Chats = () => {
       const data = await res.json();
       console.log(data);
 
-      setMessages((prev) => [
-        ...prev,
-        { sender: "ai", text: data.reply || "No reply", time },
-      ]);
+      if (data.userMessage && data.aiMessage) {
+        setMessages((prev) => {
+          const formatMsg = (m) => ({
+            _id: m._id,
+            sender: m.sender,
+            text: m.text,
+            time: new Date(m.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          });
+
+          return prev.map((m) => (m._id === tempId ? formatMsg(data.userMessage) : m)).concat(formatMsg(data.aiMessage));
+        });
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { _id: Date.now().toString(), sender: "ai", text: data.reply || "No reply", time },
+        ]);
+      }
 
       console.log(data.conversationId);
 
