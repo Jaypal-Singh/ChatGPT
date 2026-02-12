@@ -7,7 +7,7 @@ const TopBar = ({ onNewChat }) => {
     <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
       <div>
         <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-400 to-purple-400 bg-clip-text text-transparent">
-          AI Dashboard
+          PixelMind AI Dashboard
         </h1>
         <p className="text-gray-400 mt-1">
           Welcome back! Ready to explore AI conversations?

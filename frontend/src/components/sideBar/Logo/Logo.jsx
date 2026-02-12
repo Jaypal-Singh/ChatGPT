@@ -4,8 +4,7 @@ import { Sparkles } from "lucide-react";
 const Logo = () => {
   return (
     <div className="flex items-center p-4 w-full">
-      <div className="flex items-center gap-3"
-      >
+      <div className="flex items-center gap-3">
         {/* Logo Icon */}
         <div className="p-2 rounded-xl bg-violet-600/20 border border-violet-500/30 relative flex-shrink-0">
           <Sparkles className="w-6 h-6 text-violet-400" />
@@ -16,7 +15,9 @@ const Logo = () => {
 
         {/* Text */}
         <div className="flex flex-col">
-          <span className="text-lg font-bold tracking-tight text-white">AI Chatbot</span>
+          <span className="text-lg font-bold tracking-tight text-white">
+            PixelMind AI
+          </span>
           <span className="text-xs text-slate-400 font-medium">
             Powered by advanced AI
           </span>
