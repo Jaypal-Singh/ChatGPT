@@ -7,21 +7,17 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import "./chatBody.css";
-const BASE_URL = "http://localhost:5000";
+const API_URL = import.meta.env.VITE_APP_API_URL;
 const getToken = () => localStorage.getItem("token") || "";
 
 /* ------------------- EDIT API ------------------- */
 export const editMessageApi = async (messageId, text) => {
   console.log("Edit API called for:", messageId);
-  const response = await fetch(
-    `http://localhost:5000/api/v1/messages/edit/${messageId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getToken()}`,
-      },
-      body: JSON.stringify({ text }),
+  const response = await fetch(`${API_URL}/api/v1/messages/edit/${messageId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   );
 
@@ -33,7 +29,7 @@ export const editMessageApi = async (messageId, text) => {
 /* ------------------- DELETE API ------------------- */
 export const deleteMessageApi = async (messageId) => {
   const response = await fetch(
-    `http://localhost:5000/api/v1/messages/delete/${messageId}`,
+    `${API_URL}/api/v1/messages/delete/${messageId}`,
     {
       method: "DELETE",
       headers: {
@@ -90,7 +86,7 @@ const AiMessage = memo(({ msg }) => (
 
       <p className="text-[11px] text-gray-400 mt-1">{msg.time}</p>
     </div>
-  </div>
+  </div >
 ));
 
 /* ------------------- AI TYPING LOADER ------------------- */
@@ -151,7 +147,7 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
       // Call Regenerate API
       try {
         // setTotalMsg((prev) => prev + 1); // Removed optimistic update to avoid confusion, will update on success
-        const res = await fetch(`${BASE_URL}/api/v1/gemini/regenerate`, {
+        const res = await fetch(`${API_URL}/api/v1/gemini/regenerate`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +222,7 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
   return (
     <div className="w-full h-full overflow-y-auto customscrollbar relative">
       <div
-        className={`pointer-events-none sticky top-0 left-0 right-0 h-0.5 z-20 overflow-hidden
+        className={`pointer-events-none sticky top-0 left-0 right-0 h-0.5 z-20
           ${typing ? "opacity-100" : "opacity-0"}
           transition-opacity duration-300
         `}
@@ -238,9 +234,8 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
         {messages.map((msg, i) => (
           <div
             key={msg._id} // ✅ Correct key
-            className={`flex ${
-              msg.sender === "user" ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"
+              }`}
             onClick={() => setActiveMsgIndex(null)}
           >
             {/* AI MESSAGE */}

@@ -13,6 +13,7 @@ const ChatHistory = ({
   setActiveId,
   onRefresh,
 }) => {
+  const API_URL = import.meta.env.VITE_APP_API_URL;
   const [loading] = useState(false); // parent controls loading now
   const [isChatOptionOn, setIsChatOptionOn] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
@@ -39,7 +40,7 @@ const ChatHistory = ({
     if (!newName || newName === selectedChat.title) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/conversations/rename/${selectedChat._id}`, {
+      const res = await fetch(`${API_URL}/api/v1/conversations/rename/${selectedChat._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +64,7 @@ const ChatHistory = ({
     if (!confirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/conversations/delete/${selectedChat._id}`, {
+      const res = await fetch(`${API_URL}/api/v1/conversations/delete/${selectedChat._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

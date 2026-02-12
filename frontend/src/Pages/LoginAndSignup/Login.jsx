@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import styles from "./Loginsignup.module.css";
+import PopupBox from "../../utils/popupbox/PopupBox";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,10 +12,18 @@ const Login = () => {
     password: "",
   });
 
+  const [popup, setPopup] = useState({
+    message: "",
+    type: "",
+    isVisible: false,
+  });
+
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/v1/auth/login", {
+      const response = await fetch(`${API_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,18 +34,39 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert(data.message || "Login Successful!");
+        setPopup({
+          message: data.message || "Login Successful!",
+          type: "success",
+          isVisible: true,
+        });
+
         localStorage.setItem("token", data.jwtToken);
         localStorage.setItem("email", data.email);
         localStorage.setItem("name", data.name);
-        navigate("/root/dashboard");
+
+        // Delay navigation to show message
+        setTimeout(() => {
+          navigate("/root/dashboard");
+        }, 2000);
       } else {
-        alert(data.message || "Login failed");
+        setPopup({
+          message: data.message || "Login failed",
+          type: "error",
+          isVisible: true,
+        });
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Something went wrong. Please try again.");
+      setPopup({
+        message: "Something went wrong. Please try again.",
+        type: "error",
+        isVisible: true,
+      });
     }
+  };
+
+  const closePopup = () => {
+    setPopup((prev) => ({ ...prev, isVisible: false }));
   };
 
   // return (
@@ -95,6 +125,13 @@ const Login = () => {
   // );
   return (
     <section>
+      {popup.isVisible && (
+        <PopupBox
+          message={popup.message}
+          type={popup.type}
+          onClose={closePopup}
+        />
+      )}
       {/* Background grid spans */}
       {Array.from({ length: 200 }).map((_, index) => (
         <span key={index}></span>

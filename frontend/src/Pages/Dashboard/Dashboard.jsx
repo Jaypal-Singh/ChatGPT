@@ -9,6 +9,7 @@ import PhoneTop from "../../components/Phone/PhoneTop";
 import { useOutletContext } from "react-router-dom";
 
 const Dashboard = () => {
+  const API_URL = import.meta.env.VITE_APP_API_URL;
   const { openSidebar } = useOutletContext();
   const [conversations, setConversations] = useState([]);
   const [totalConversation, setTotalConversation] = useState(0);
@@ -26,7 +27,7 @@ const Dashboard = () => {
     const getMessagesLength = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/messages/getMessageLength",
+          `${API_URL}/api/v1/messages/getMessageLength`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -49,7 +50,7 @@ const Dashboard = () => {
     const getMessagesByTime = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/messages/getMessagesByTime",
+          `${API_URL}/api/v1/messages/getMessagesByTime`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ const Dashboard = () => {
     const getAvgResponseTime = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/messages/getAverageResponseTime",
+          `${API_URL}/api/v1/messages/getAverageResponseTime`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -96,7 +97,7 @@ const Dashboard = () => {
     const getAllMessages = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/messages/getAllMessages",
+          `${API_URL}/api/v1/messages/getAllMessages`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -120,7 +121,7 @@ const Dashboard = () => {
     const loadConversationList = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/conversations/getConversation",
+          `${API_URL}/api/v1/conversations/getConversation`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
