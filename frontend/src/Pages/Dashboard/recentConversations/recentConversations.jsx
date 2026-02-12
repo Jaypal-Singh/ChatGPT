@@ -28,7 +28,7 @@ const RecentConversations = ({ allConversations = [] }) => {
         overflow-y-auto customscrollbar shadow-lg shadow-cyan-500/10
       "
     >
-      {/* Sticky Header */}
+     
       <h2
         className="sticky top-0 z-10 bg-gray-800 pt-4 pb-3 px-6
         text-xl font-semibold text-white border-b border-slate-800"

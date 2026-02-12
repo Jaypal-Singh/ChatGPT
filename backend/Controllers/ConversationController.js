@@ -2,27 +2,25 @@ import ConversationModel from "../Model/ConversationModel.js";
 import MessageModel from "../Model/MessageModel.js";
 import mongoose from "mongoose";
 
-// Replace the existing getConversation function
 const getConversation = async (req, res) => {
   const userId = req.user._id;
   if (!userId) {
     return res.status(401).json({ message: "User ID missing" });
   }
   try {
-    // Use aggregation to count messages per conversation
     const conversations = await ConversationModel.aggregate([
-      { $match: { userId: new mongoose.Types.ObjectId(userId) } }, // Filter by user
+      { $match: { userId: new mongoose.Types.ObjectId(userId) } },
       {
         $lookup: {
-          from: "messages", // Join with messages collection
+          from: "messages",
           localField: "_id",
           foreignField: "conversationId",
           as: "messages",
         },
       },
-      { $addFields: { messageCount: { $size: "$messages" } } }, // Count messages
-      { $project: { messages: 0 } }, // Exclude the messages array to save bandwidth
-      { $sort: { lastMessageAt: -1 } }, // Sort by latest
+      { $addFields: { messageCount: { $size: "$messages" } } },
+      { $project: { messages: 0 } },
+      { $sort: { lastMessageAt: -1 } },
     ]);
     return res.status(200).json(conversations);
   } catch (err) {
@@ -59,7 +57,6 @@ const renameConversation = async (req, res) => {
 
 const deleteConversation = async (req, res) => {
   const { conversationId } = req.params;
-  console.log("delete api hit", conversationId);
 
   try {
     const deletedConversation = await ConversationModel.findOneAndDelete({
@@ -71,9 +68,7 @@ const deleteConversation = async (req, res) => {
       return res.status(404).json({ message: "Conversation not found" });
     }
 
-    // Delete associated messages
-    const deleteResult = await MessageModel.deleteMany({ conversationId: new mongoose.Types.ObjectId(conversationId) });
-    console.log("Deleted messages count:", deleteResult.deletedCount);
+    await MessageModel.deleteMany({ conversationId: new mongoose.Types.ObjectId(conversationId) });
 
     return res.status(200).json({ success: true, message: "Conversation and messages deleted" });
   } catch (err) {

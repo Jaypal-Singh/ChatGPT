@@ -4,12 +4,12 @@ import "./LoginSignup.css";
 const LoginSignup = () => {
   return (
     <section>
-      {/* Background grid spans */}
+   
       {Array.from({ length: 200 }).map((_, index) => (
         <span key={index}></span>
       ))}
 
-      {/* Sign In Box */}
+      
       <div className="signin">
         <div className="content">
           <h2>Sign In</h2>

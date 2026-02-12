@@ -15,9 +15,8 @@
   overflow: hidden;
 } */
 
-/* ===========================
-   FULLSCREEN GRID BACKGROUND
-=========================== */
+
+/* FULLSCREEN GRID BACKGROUND */
 section {
   position: fixed;
   inset: 0;
@@ -73,9 +72,8 @@ section span:hover {
   transition: 0s;
 }
 
-/* ===========================
-   SIGN IN CARD
-=========================== */
+
+/* SIGN IN CARD */
 .signin {
   position: absolute;
   z-index: 10;
@@ -115,9 +113,8 @@ section span:hover {
   -webkit-text-fill-color: transparent;
 }
 
-/* ===========================
-   FORM
-=========================== */
+/* 
+   FORM*/
 .form {
   width: 100%;
   display: flex;
