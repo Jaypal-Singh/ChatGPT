@@ -27,14 +27,12 @@
 
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import SideBar from "../../components/sideBar/sideBar";
 import Dashboard from "../Dashboard/Dashboard";
 import Chats from "../Chats/Chats";
 import Login from "../LoginAndSignup/Login";
 import Signup from "../LoginAndSignup/Signup";
 import LoginSignupRoot from "../LoginAndSignup/LoginSignupRoot";
 import Root from "../Root/Root";
-import LoginSignup from "../../LoginSignup";
 
 const AllRoutes = () => {
   return (
