@@ -7,6 +7,7 @@ import PhoneTop from "../../components/Phone/PhoneTop";
 import { useOutletContext } from "react-router-dom";
 
 const Chats = () => {
+  const API_URL = import.meta.env.VITE_APP_API_URL;
   const { openSidebar } = useOutletContext();
 
   const [messages, setMessages] = useState([]);
@@ -34,7 +35,7 @@ const Chats = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/v1/messages/getMessage/${conversationId}`,
+        `${API_URL}/api/v1/messages/getMessage/${conversationId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,7 +74,7 @@ const Chats = () => {
     const loadConversationList = async () => {
       try {
         const res = await fetch(
-          "http://localhost:5000/api/v1/conversations/getConversation",
+          `${API_URL}/api/v1/conversations/getConversation`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -114,7 +115,7 @@ const Chats = () => {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/v1/gemini/geminiInput",
+        `${API_URL}/api/v1/gemini/geminiInput`,
         {
           method: "POST",
           headers: {
