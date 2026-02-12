@@ -26,7 +26,6 @@ const Chats = () => {
     setIsHistoryOpen((prev) => !prev);
   };
 
-  // ---------------- LOAD MESSAGES ----------------
   const loadMessages = async (conversationId) => {
     if (!conversationId) {
       setMessages([]);
@@ -69,7 +68,6 @@ const Chats = () => {
     loadMessages(activeId);
   }, [activeId]);
 
-  // ---------------- LOAD CONVERSATIONS ----------------
   useEffect(() => {
     const loadConversationList = async () => {
       try {
@@ -94,7 +92,6 @@ const Chats = () => {
     loadConversationList();
   }, [token, isHistoryOpen, historyReloadKey]);
 
-  // ---------------- SEND MESSAGE ----------------
   const sendMessage = async (text) => {
     const time = new Date().toLocaleTimeString([], {
       hour: "2-digit",
@@ -131,7 +128,6 @@ const Chats = () => {
       );
 
       const data = await res.json();
-      console.log(data);
 
       if (data.userMessage && data.aiMessage) {
         setMessages((prev) => {
@@ -154,8 +150,6 @@ const Chats = () => {
         ]);
       }
 
-      console.log(data.conversationId);
-
       if (data.conversationId) {
         setActiveId(data.conversationId);
       }
@@ -168,19 +162,15 @@ const Chats = () => {
     }
   };
 
-  console.log(activeId);
   const activeConversationTitle =
     conversations.find((c) => c._id === activeId)?.title || "New Chat";
 
-  console.log(activeConversationTitle);
   return (
     <div className="flex h-screen w-full bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white relative">
-      {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-20">
         <PhoneTop openSidebar={openSidebar} />
       </div>
 
-      {/* Mobile ChatHistory */}
       <div
         className={`md:hidden fixed top-0 left-0 h-full z-30 transition-transform duration-300
           ${isHistoryOpen ? "translate-x-0" : "-translate-x-full"} w-72`}
@@ -196,7 +186,6 @@ const Chats = () => {
         />
       </div>
 
-      {/* Desktop ChatHistory */}
       <div
         className={`hidden md:block transition-all duration-300 ${isHistoryOpen ? "w-80" : "w-0 overflow-hidden"
           }`}
@@ -212,7 +201,6 @@ const Chats = () => {
         />
       </div>
 
-      {/* Chat Area */}
       <div className="flex-1 flex flex-col pt-16 md:pt-0">
         <ChatNavBar
           onSelectConversation={setActiveId}

@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { User, Mail, Lock } from "lucide-react";
 import styles from "./Loginsignup.module.css";
 import PopupBox from "../../utils/popupbox/PopupBox";
 
@@ -41,7 +40,6 @@ const Signup = () => {
           isVisible: true,
         });
 
-        // Delay navigation to show message
         setTimeout(() => {
           navigate("/login");
         }, 2000);
@@ -66,8 +64,6 @@ const Signup = () => {
     setPopup((prev) => ({ ...prev, isVisible: false }));
   };
 
-
-
   return (
     <section>
       {popup.isVisible && (
@@ -77,12 +73,10 @@ const Signup = () => {
           onClose={closePopup}
         />
       )}
-      {/* Background grid spans */}
       {Array.from({ length: 200 }).map((_, index) => (
         <span key={index}></span>
       ))}
 
-      {/* Sign In Box */}
       <div className={styles.signin}>
         <div className={styles.content}>
           <h2>Sign In</h2>

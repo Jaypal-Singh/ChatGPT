@@ -14,7 +14,7 @@ const ChatHistory = ({
   onRefresh,
 }) => {
   const API_URL = import.meta.env.VITE_APP_API_URL;
-  const [loading] = useState(false); // parent controls loading now
+  const [loading] = useState(false);
   const [isChatOptionOn, setIsChatOptionOn] = useState(false);
   const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
   const [selectedChat, setSelectedChat] = useState(null);
@@ -27,7 +27,6 @@ const ChatHistory = ({
       onSelectConversation(chat._id);
     }
 
-    // auto close on mobile
     if (window.innerWidth < 768 && onClose) {
       onClose();
     }
@@ -94,8 +93,8 @@ const ChatHistory = ({
     const containerRect = containerRef.current.getBoundingClientRect();
 
     setMenuPos({
-      top: buttonRect.top - containerRect.top + 20, // slightly below
-      left: buttonRect.left - containerRect.left - 120, // Adjust to show to the left
+      top: buttonRect.top - containerRect.top + 20,
+      left: buttonRect.left - containerRect.left - 120,
     });
     setSelectedChat(chat);
     setIsChatOptionOn(true);
@@ -106,7 +105,6 @@ const ChatHistory = ({
       ref={containerRef}
       className="w-72 md:w-80 h-full bg-gray-900/70 backdrop-blur-sm border-r border-gray-800 flex flex-col p-4 relative"
     >
-      {/* Close button (mobile) */}
       <button
         onClick={onClose}
         className="md:hidden absolute top-4 right-4 p-2 rounded-lg bg-slate-800/80 text-gray-300 hover:text-white hover:bg-slate-700 transition shadow"
@@ -114,7 +112,6 @@ const ChatHistory = ({
         <X size={20} />
       </button>
 
-      {/* Header */}
       <div className="flex items-center gap-2 mb-6 mt-2">
         <div className="p-1.5 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-lg shadow-lg shadow-cyan-500/25">
           <Sparkles className="w-5 h-5 text-white" />
@@ -122,7 +119,6 @@ const ChatHistory = ({
         <h2 className="text-white font-semibold text-md">Chat History</h2>
       </div>
 
-      {/* New Conversation */}
       <button
         className="w-full bg-gradient-to-br from-cyan-500 to-purple-600 text-white rounded-lg p-3 flex items-center justify-center gap-2 mb-4 hover:opacity-90 transition-opacity shadow-lg shadow-cyan-500/25"
         onClick={() => {
@@ -136,7 +132,6 @@ const ChatHistory = ({
         <span className="text-sm font-medium">New Conversation</span>
       </button>
 
-      {/* Search (UI only) */}
       <div className="relative mb-6">
         <Search className="absolute left-3 top-3 h-4 w-4 text-gray-500" />
         <input
@@ -146,7 +141,6 @@ const ChatHistory = ({
         />
       </div>
 
-      {/* Conversation List */}
       <div className="flex-1 overflow-y-auto space-y-3 customscrollbar pr-1">
         {loading && (
           <p className="text-gray-500 text-sm text-center mt-4">

@@ -9,7 +9,7 @@ const PopupBox = ({ message, type = 'info', onClose, duration = 3000 }) => {
             setIsVisible(false);
             setTimeout(() => {
                 onClose();
-            }, 500); // Wait for animation to finish
+            }, 500);
         }, duration);
 
         return () => clearTimeout(timer);

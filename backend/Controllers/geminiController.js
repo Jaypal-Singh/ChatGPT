@@ -11,7 +11,6 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const getGeminiResponse = async (req, res) => {
   try {
     const { message, conversationId, pastUserMessages } = req.body;
-    console.log("pastData from user - > ", pastUserMessages);
     const userId = req.user._id;
 
     if (!userId) {
@@ -28,9 +27,7 @@ const getGeminiResponse = async (req, res) => {
     }
 
     let conversation;
-    console.log(conversationId);
     if (!conversationId) {
-      console.log("gemini api hit no con. id");
       conversation = await ConversationModel.create({
         userId,
         title: message.slice(0, 15),
@@ -45,8 +42,6 @@ const getGeminiResponse = async (req, res) => {
         return res.status(404).json({ message: "Conversation not found" });
       }
     }
-
-    console.log(conversation);
 
     const userMsg = await MessageModel.create({
       conversationId: conversation._id,
@@ -113,13 +108,11 @@ const getGeminiResponse = async (req, res) => {
 const regenerateResponse = async (req, res) => {
   try {
     const { messageId, pastUserMessages } = req.body;
-    const userId = req.user._id;
 
     if (!messageId) {
       return res.status(400).json({ message: "Message ID is required" });
     }
 
-    // 1. Find the User Message (that was just edited)
     const userMessage = await MessageModel.findById(messageId);
     if (!userMessage) {
       return res.status(404).json({ message: "Message not found" });
@@ -129,13 +122,11 @@ const regenerateResponse = async (req, res) => {
       return res.status(400).json({ message: "Can only regenerate for user messages" });
     }
 
-    // 2. Find Conversation to update stats/context
     const conversation = await ConversationModel.findById(userMessage.conversationId);
     if (!conversation) {
       return res.status(404).json({ message: "Conversation not found" });
     }
 
-    // 3. Generate new AI response
     const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
     let contextStr = "";
     if (pastUserMessages && Array.isArray(pastUserMessages) && pastUserMessages.length > 0) {
@@ -153,7 +144,6 @@ const regenerateResponse = async (req, res) => {
     const responseTime = (endTime - startTime) / 1000;
     const aiText = response.text;
 
-    // 4. Create new AI Message linked to the User Message
     const newAiMessage = await MessageModel.create({
       conversationId: conversation._id,
       sender: "ai",
@@ -162,7 +152,6 @@ const regenerateResponse = async (req, res) => {
       replyTo: userMessage._id,
     });
 
-    // 5. Update Conversation
     conversation.lastMessage = aiText;
     conversation.lastSender = "ai";
     conversation.lastMessageAt = new Date();
@@ -171,7 +160,7 @@ const regenerateResponse = async (req, res) => {
     return res.status(200).json({
       success: true,
       reply: aiText,
-      message: newAiMessage // Return full object if needed by frontend
+      message: newAiMessage 
     });
 
   } catch (error) {

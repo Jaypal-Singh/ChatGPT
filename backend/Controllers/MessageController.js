@@ -3,12 +3,10 @@ import ConversationModel from "../Model/ConversationModel.js";
 import DashboardModel from "../Model/DashboardModel.js";
 
 const getMessage = async (req, res) => {
-  console.log("msg api hit");
   try {
     const { conversationId } = req.params;
     const userId = req.user._id;
 
-    // 1️⃣ Check conversation belongs to this user
     const conversation = await ConversationModel.findOne({
       _id: conversationId,
       userId: userId,
@@ -21,13 +19,11 @@ const getMessage = async (req, res) => {
       });
     }
 
-    // 2️⃣ Fetch messages of this conversation
     const messages = await MessageModel.find({ conversationId }).sort({
       createdAt: 1,
-    }); // old → new
-    // console.log(messages.length)
+    });
+
     const totalMessageLength = messages.length;
-    console.log(totalMessageLength);
 
     res.status(200).json({
       success: true,
@@ -78,11 +74,9 @@ const getMessageLength = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    // Find all conversations for the user
     const conversations = await ConversationModel.find({ userId });
     const conversationIds = conversations.map((c) => c._id);
 
-    // Count total messages in those conversations
     const totalMessages = await MessageModel.countDocuments({
       conversationId: { $in: conversationIds },
     });
@@ -104,13 +98,11 @@ const getMessagesByTime = async (req, res) => {
   try {
     const userId = req.user._id;
 
-    //day
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     const endOfDay = new Date();
     endOfDay.setHours(23, 59, 59, 999);
 
-    //yesterday
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
 
@@ -123,7 +115,6 @@ const getMessagesByTime = async (req, res) => {
     const conversations = await ConversationModel.find({ userId });
     const conversationIds = conversations.map((c) => c._id);
 
-    //week
     const startOfWeek = new Date();
     startOfWeek.setDate(startOfWeek.getDate() - 7);
     startOfWeek.setHours(0, 0, 0, 0);
@@ -199,7 +190,6 @@ const editMessage = async (req, res) => {
       });
     }
 
-  
     const message = await MessageModel.findById(messageId);
 
     if (!message) {
@@ -216,7 +206,6 @@ const editMessage = async (req, res) => {
       });
     }
 
-   
     const conversation = await ConversationModel.findOne({
       _id: message.conversationId,
       userId: userId,
@@ -229,7 +218,6 @@ const editMessage = async (req, res) => {
       });
     }
 
-   
     message.text = text;
     await message.save();
     const linkedAiMessage = await MessageModel.findOne({
@@ -239,7 +227,6 @@ const editMessage = async (req, res) => {
     if (linkedAiMessage) {
       await MessageModel.findByIdAndDelete(linkedAiMessage._id);
     }
-
 
     res.status(200).json({
       success: true,
@@ -258,7 +245,6 @@ const editMessage = async (req, res) => {
 
 const deleteMessage = async (req, res) => {
   try {
-    console.log("delete api hit");
     const mesaageId = req.params.messageId;
     const userId = req.user._id;
 
@@ -279,7 +265,6 @@ const deleteMessage = async (req, res) => {
       await MessageModel.findByIdAndDelete(aiMessage._id);
     }
     
-    // Always delete the user message
     await MessageModel.findByIdAndDelete(userMessage._id);
 
     res.status(200).json({
@@ -303,15 +288,12 @@ const getMessageByUserText = async (req, res) => {
     const userId = req.user._id;
    
     const {text, conversationsId} = req.body;
-    console.log(text)
-    console.log(conversationsId)
 
     const messages = await MessageModel.find({
       text: { $regex: text, $options: "i" },
       conversationId: conversationsId
     });
 
-    console.log(messages[0]._id)
     res.status(200).json({
       success: true,
       data: messages

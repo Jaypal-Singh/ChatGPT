@@ -164,6 +164,5 @@ export const useDialog = () => {
     return { confirm, prompt };
 };
 
-// Singleton for direct usage if context is hard to reach? 
-// No, let's stick to hook usage in components. It's cleaner React.
+
 export const dialog = {}; 

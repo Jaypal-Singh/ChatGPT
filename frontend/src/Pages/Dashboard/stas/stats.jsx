@@ -8,12 +8,11 @@ const Stats = ({
 }) => {
   const StatCard = ({ title, value, change, icon, gradient, shadowColor }) => (
     <div className="p-5 rounded-2xl flex flex-col justify-between bg-gray-800/60 border border-gray-800 h-36 relative overflow-hidden group hover:border-gray-700 transform hover:scale-105 transition-all duration-300 shadow-xl shadow-cyan-500/10">
-      {/* style={{ boxShadow: `0 10px 30px -10px ${shadowColor}` }} */}
-      {/* Background Gradient Circle */}
+     
       <div
         className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${gradient} opacity-5 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none`}
       ></div>
-      {/* Title and Icon */}
+    
       <div className="flex justify-between items-start mb-2 z-10">
         <div>
           <span className="text-gray-400 text-sm font-medium block mb-1">
@@ -29,7 +28,7 @@ const Stats = ({
           <i className={`fas ${icon} text-white text-lg`}></i>
         </div>
       </div>
-      {/* Change Indicator */}
+  
       <div className="flex items-center mt-auto z-10">
         <span
           className={`${

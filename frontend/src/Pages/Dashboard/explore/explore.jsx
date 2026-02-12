@@ -14,7 +14,7 @@ const Explore = () => {
           background: "linear-gradient(to right, #4C65EF, #8B5CF6, #EC4899)",
         }}
       >
-        {/* Text Section */}
+        
         <div className="flex flex-col gap-1 md:gap-2">
           <h2 className="text-2xl font-bold text-white">
             Ready to explore AI conversations?
