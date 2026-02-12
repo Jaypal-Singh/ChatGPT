@@ -82,7 +82,7 @@ const getGeminiResponse = async (req, res) => {
 
     const aiText = response.text;
 
-    await MessageModel.create({
+    const aiMsg = await MessageModel.create({
       conversationId: conversation._id,
       sender: "ai",
       text: aiText,
@@ -98,6 +98,8 @@ const getGeminiResponse = async (req, res) => {
     return res.status(200).json({
       conversationId: conversation._id,
       reply: aiText,
+      userMessage: userMsg,
+      aiMessage: aiMsg,
     });
   } catch (error) {
     console.error(error);
