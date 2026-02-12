@@ -19,8 +19,7 @@ export const editMessageApi = async (messageId, text) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
     },
-    body: JSON.stringify({ text }),
-  });
+  );
 
   if (!response.ok) throw new Error("Failed to edit message");
 
@@ -37,7 +36,7 @@ export const deleteMessageApi = async (messageId) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${getToken()}`,
       },
-    }
+    },
   );
 
   if (!response.ok) throw new Error("Failed to delete message");
@@ -90,7 +89,6 @@ const AiMessage = memo(({ msg }) => (
   </div >
 ));
 
-
 /* ------------------- AI TYPING LOADER ------------------- */
 const AiTypingLoader = () => (
   <div className="flex gap-3 items-end max-w-[80%]">
@@ -129,9 +127,7 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
       await editMessageApi(msgId, localEditText);
 
       setMessages((prev) =>
-        prev.map((m) =>
-          m._id === msgId ? { ...m, text: localEditText } : m
-        )
+        prev.map((m) => (m._id === msgId ? { ...m, text: localEditText } : m)),
       );
 
       // Remove old AI response from UI immediately
@@ -171,7 +167,10 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
               _id: data.message._id,
               sender: "ai",
               text: data.reply,
-              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              time: new Date().toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              }),
             };
 
             const updated = [...prev];
@@ -183,7 +182,6 @@ const ChatBody = ({ messages, setMessages, typing, setTotalMsg }) => {
       } catch (geminiErr) {
         console.error("Regeneration failed", geminiErr);
       }
-
     } catch (err) {
       console.error("Edit failed:", err);
     }
